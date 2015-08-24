@@ -49,7 +49,7 @@ public class TabLayout extends TabSheet {
 		confTabs.setSizeFull();
 		confTabs.addStyleName(ValoTheme.TABSHEET_CENTERED_TABS);	//TABSHEET_EQUAL_WIDTH_TABS);
 
-		confTabs.addTab(graph, "User Profiles / Models");
+//		confTabs.addTab(graph, "User Profiles / Models");
 		//graphTab.addComponent(MbpetDemoUI.graph);
 		
 		confTabs.addTab(ramp, "Ramp Function");

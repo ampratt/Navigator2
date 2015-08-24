@@ -66,6 +66,11 @@ public class MainView extends HorizontalLayout implements View {
     	MBPeTMenu menu = new MBPeTMenu();	//navigator
     	addComponent(menu);
     	
+    	
+    	//Landing Page
+    	
+    	
+    	
     	// add content area to main view
 //	    	ComponentContainer content = new CssLayout();
 //	    	content.addStyleName("view-content");
@@ -93,6 +98,10 @@ public class MainView extends HorizontalLayout implements View {
         		  new Label("Nothing to see here, " +
         				  "just pass along."));
             return;
+        } else if (event.getParameters() == "landingPage") {
+            contentView.equalPanel.setContent(
+          		  new Label("This is the Landing Page"));
+              return;
         } else {
 //        	ContentView content = new ContentView();
         	contentView.equalPanel.setContent(new AnimalViewer(

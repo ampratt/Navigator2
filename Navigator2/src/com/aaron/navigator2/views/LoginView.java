@@ -164,7 +164,7 @@ public class LoginView extends VerticalLayout  implements View {
             public void buttonClick(final ClickEvent event) {
             	UI.getCurrent()
     			.getNavigator()
-        			.navigateTo(MainView.NAME);
+        			.navigateTo(MainView.NAME+ "/" + "landingPage");
 //                DashboardEventBus.post(new UserLoginRequestedEvent(username
 //                        .getValue(), password.getValue()));
             }

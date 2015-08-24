@@ -1,5 +1,6 @@
 package com.aaron.navigator2.views;
 
+import com.aaron.navigator2.tabs.TabLayout;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -36,7 +37,12 @@ public class ContentView extends VerticalLayout implements View {
 
 		Component contentLayout = buildContentLayout();
     	addComponent(contentLayout);
-    	setExpandRatio(contentLayout, 1);
+//    	setExpandRatio(contentLayout, 1);
+    	
+//		VerticalLayout tabs = new VerticalLayout();
+		TabLayout tabs = new TabLayout();
+		addComponent(tabs);
+    	setExpandRatio(tabs, 1);
 	}
 
 	public HorizontalLayout buildTopBar() {
@@ -90,11 +96,14 @@ public class ContentView extends VerticalLayout implements View {
 	}
 	
 	public Component buildContentLayout(){
-    	VerticalLayout contentLayout = new VerticalLayout();
+    	HorizontalLayout contentLayout = new HorizontalLayout();
+    	contentLayout.setWidth("100%");
     	contentLayout.addStyleName("content");
     	
-        equalPanel.setWidth("100%");
+//        equalPanel.setWidth("100%");
+        equalPanel.addStyleName("equal-panel");
         contentLayout.addComponent(equalPanel);
+//        contentLayout.setExpandRatio(equalPanel, 1);
         
         contentLayout.addComponent(buildTreeMenu2());
 //        contentLayout.addComponent(BuildTreeMenu());
@@ -109,7 +118,7 @@ public class ContentView extends VerticalLayout implements View {
         grid.addRow("Galileo Galilei", 1564);
         grid.addRow("Johannes Kepler", 1571);
 
-        contentLayout.addComponent(grid);
+//        contentLayout.addComponent(grid);
         
         grid.addSelectionListener(new SelectionListener() {
             @Override
@@ -148,7 +157,7 @@ public class ContentView extends VerticalLayout implements View {
 	        // Expand whole tree
 	        System.out.println("tree.rootItemIds(): " + tree.rootItemIds());
 	        for (final Object id : tree.rootItemIds()) {
-	            tree.expandItemsRecursively(id);
+//	            tree.expandItemsRecursively(id);
 	        }
 	 
 	        tree.addItemClickListener(new ItemClickListener() {
@@ -200,14 +209,11 @@ public class ContentView extends VerticalLayout implements View {
     @SuppressWarnings("unchecked")
 	private Container createTreeContent() {
 		   final Object[][] testCases = new Object[][]{
-	    	        new Object[]{"Dashboard", "01.02.15", "03.04.15", "04.05.15", "06.07.15"},
-	    	        new Object[]{"Panel", "01.02.15", "03.04.15", "04.05.15", "06.07.15"},
 	    	        new Object[]{"Portal", "01.02.15", "03.04.15", "04.05.15", "06.07.15"},
 	    	        new Object[]{"demo", "01.02.15", "03.04.15", "04.05.15", "06.07.15"},
 	    	        new Object[]{"random", "01.02.15", "03.04.15", "04.05.15", "06.07.15"}
 		        };
 	    	        
-		   
 		   HierarchicalContainer hc = new HierarchicalContainer();
 		   hc.addContainerProperty("name", String.class, "");
 		   

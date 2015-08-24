@@ -54,6 +54,7 @@ public class MBPeTMenu extends CustomComponent{
     	
     	menuLayout.addComponent(buildTitle());
         menuLayout.addComponent(buildUserMenu());
+        menuLayout.addComponent(landingPageButton());
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
 
@@ -84,6 +85,21 @@ public class MBPeTMenu extends CustomComponent{
         return menuLayout;
                
     }
+
+
+	private Component landingPageButton() {
+		Button button = new Button("Start page", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				UI.getCurrent()
+	        		.getNavigator()
+	            		.navigateTo(MainView.NAME + "/" + "landingPage");
+				
+			}
+		});
+		
+		return button;
+	}
 
 
 	private Component buildTitle(){
@@ -128,7 +144,7 @@ public class MBPeTMenu extends CustomComponent{
 	    	        new Object[]{"random", "01.02.15", "03.04.15", "04.05.15", "06.07.15"}
 		        };
 	    	        
-	    	final Tree tree = new Tree("Use Cases:");
+	    	final Tree tree = new Tree("Test Cases:");
 //	    	tree.addStyleName("treemenu");
 	    	
 	    	/* Add test cases as root items in the tree. */
