@@ -49,7 +49,7 @@ public class MainView extends HorizontalLayout implements View {
         	UI.getCurrent()
         		.getNavigator()
     				.navigateTo(MainView.NAME + "/" + menuitem);
-//        	navigator.navigateTo(MainView.NAME + "/" + menuitem);
+        	//        	navigator.navigateTo(MainView.NAME + "/" + menuitem);
         }
     }
     

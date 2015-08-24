@@ -8,10 +8,14 @@ import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
@@ -21,16 +25,69 @@ import com.vaadin.ui.VerticalLayout;
 public class ContentView extends VerticalLayout implements View {
 
     Panel equalPanel = new Panel("equal panel"); 
-
+	public Label title = new Label("");
+//	String pageTitle = null;
     
 	public ContentView() {
 		setSizeFull();
 		this.addStyleName("content");
 		
-//		Component contentLayout = buildContentLayout();
-    	addComponent(buildContentLayout());
+		addComponent(buildTopBar());
+
+		Component contentLayout = buildContentLayout();
+    	addComponent(contentLayout);
+    	setExpandRatio(contentLayout, 1);
 	}
+
+	public HorizontalLayout buildTopBar() {
+		title.addStyleName("h2");
+		
+		Button saveButton = new Button("Save settings");
+		Button startButton = new Button("Start Test");
+		saveButton.addStyleName("tiny");
+		startButton.addStyleName("tiny");
 	
+		HorizontalLayout topBar = new HorizontalLayout();
+		//header.setStyleName("header-padding");
+		topBar.setWidth("100%");
+		topBar.setSpacing(true);
+		topBar.addComponent(title);
+		topBar.addComponent(saveButton);
+		topBar.addComponent(startButton);
+
+		// TESTING
+		Button titleButton = new Button("set title");
+		topBar.addComponent(titleButton);
+		titleButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				//testing purposes
+				setPageTitle("you reset the page title");
+			}
+		});	
+		
+		
+		topBar.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		topBar.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
+		topBar.setComponentAlignment(startButton, Alignment.MIDDLE_RIGHT);
+		topBar.setExpandRatio(title, 2);
+		topBar.setExpandRatio(startButton, 0);
+		topBar.setExpandRatio(saveButton, 1);	
+		
+	    saveButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				//testing purposes
+				Notification.show("Your settings will be saved", Type.WARNING_MESSAGE);
+			}
+		});
+	    startButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				//testing purposes
+				Notification.show("This will launch the test case to the master", Type.WARNING_MESSAGE);
+			}
+		});		
+		
+		return topBar;
+	}
 	
 	public Component buildContentLayout(){
     	VerticalLayout contentLayout = new VerticalLayout();
@@ -62,6 +119,8 @@ public class ContentView extends VerticalLayout implements View {
             		.getNavigator()
             			.navigateTo(MainView.NAME + "/" + 
         							event.getSelected().toString());	//LoginView.NAME
+            	
+            	title.setValue(event.getSelected().toString());
             }
         }); 
 
@@ -111,10 +170,11 @@ public class ContentView extends VerticalLayout implements View {
 		         			.navigateTo(MainView.NAME + "/" + 
      							path);
 
+					title.setValue(path);
 					
-					Notification.show("Value changed: ",
-	    	                path,	//event.getItem()),
-	    	                Type.HUMANIZED_MESSAGE); 
+//					Notification.show("Value changed: ",
+//	    	                path,	//event.getItem()),
+//	    	                Type.HUMANIZED_MESSAGE); 
 				}
 			});
 	        
@@ -199,60 +259,75 @@ public class ContentView extends VerticalLayout implements View {
 	}
 
 
-	private Component BuildTreeMenu() {
-    	final Object[][] planets = new Object[][]{
-    	        new Object[]{"Mercury"}, 
-    	        new Object[]{"Venus"},
-    	        new Object[]{"Earth", "The Moon"},    
-    	        new Object[]{"Mars", "Phobos", "Deimos"},
-    	        new Object[]{"Jupiter", "Io", "Europa", "Ganymedes",
-    	                                "Callisto"}
-	        };
-    	        
-    	Tree tree = new Tree("The Planets and Major Moons");
+//	private Component BuildTreeMenu() {
+//    	final Object[][] planets = new Object[][]{
+//    	        new Object[]{"Mercury"}, 
+//    	        new Object[]{"Venus"},
+//    	        new Object[]{"Earth", "The Moon"},    
+//    	        new Object[]{"Mars", "Phobos", "Deimos"},
+//    	        new Object[]{"Jupiter", "Io", "Europa", "Ganymedes",
+//    	                                "Callisto"}
+//	        };
+//    	        
+//    	Tree tree = new Tree("The Planets and Major Moons");
+//
+//    	/* Add planets as root items in the tree. */
+//    	for (int i=0; i<planets.length; i++) {
+//    	    String planet = (String) (planets[i][0]);
+//    	    tree.addItem(planet);
+//    	    
+//    	    if (planets[i].length == 1) {
+//    	        // The planet has no moons so make it a leaf.
+//    	        tree.setChildrenAllowed(planet, false);
+//    	    } else {
+//    	        // Add children (moons) under the planets.
+//    	        for (int j=1; j<planets[i].length; j++) {
+//    	            String moon = (String) planets[i][j];
+//    	            
+//    	            // Add the item as a regular item.
+//    	            tree.addItem(moon);
+//    	            
+//    	            // Set it to be a child.
+//    	            tree.setParent(moon, planet);
+//    	            
+//    	            // Make the moons look like leaves.
+//    	            tree.setChildrenAllowed(moon, false);
+//    	        }
+//
+//    	        // Expand the subtree.
+//    	        tree.expandItemsRecursively(planet);
+//    	    }
+//    	}
+////    	main.addComponent(tree);
+//    	
+//		return tree;
+//	}
 
-    	/* Add planets as root items in the tree. */
-    	for (int i=0; i<planets.length; i++) {
-    	    String planet = (String) (planets[i][0]);
-    	    tree.addItem(planet);
-    	    
-    	    if (planets[i].length == 1) {
-    	        // The planet has no moons so make it a leaf.
-    	        tree.setChildrenAllowed(planet, false);
-    	    } else {
-    	        // Add children (moons) under the planets.
-    	        for (int j=1; j<planets[i].length; j++) {
-    	            String moon = (String) planets[i][j];
-    	            
-    	            // Add the item as a regular item.
-    	            tree.addItem(moon);
-    	            
-    	            // Set it to be a child.
-    	            tree.setParent(moon, planet);
-    	            
-    	            // Make the moons look like leaves.
-    	            tree.setChildrenAllowed(moon, false);
-    	        }
+	
+	public void setPageTitle(String t){
+		title.setValue(t);
 
-    	        // Expand the subtree.
-    	        tree.expandItemsRecursively(planet);
-    	    }
-    	}
-//    	main.addComponent(tree);
-    	
-		return tree;
 	}
-
+	public String getPageTitle() {
+		return title.getValue();
+	}
 
     @Override
     public void enter(ViewChangeEvent event) {
         if (event.getParameters() == null
             || event.getParameters().isEmpty()) {
+        	title.setValue("didn't get anything?");
             equalPanel.setContent(
                 new Label("Nothing to see here, " +
                           "just pass along."));
             return;
         } else {
+        	String str = event.getParameters();
+//            setPageTitle(str);
+            title.setValue(str);
+            title.setCaption(str);
+            
+        	System.out.println("EVENTS PARAMS WERE: " + event.getParameters().toString());
             equalPanel.setContent(new AnimalViewer(
                 event.getParameters()));
         }

@@ -20,7 +20,7 @@ public class MBPeTMenu extends CustomComponent{
 
 //	Navigator navigator;
     String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
-
+    
     // Menu navigation button listener
     class ButtonListener implements Button.ClickListener {
         private static final long serialVersionUID = -4941184695301907995L;
@@ -36,7 +36,7 @@ public class MBPeTMenu extends CustomComponent{
         	UI.getCurrent()
         		.getNavigator()
             		.navigateTo(MainView.NAME + "/" + menuitem);
-//            navigator.navigateTo(MainView.NAME + "/" + menuitem);
+        	//            navigator.navigateTo(MainView.NAME + "/" + menuitem);
         }
     }
     
@@ -193,14 +193,15 @@ public class MBPeTMenu extends CustomComponent{
 					}
 					
 					getUI()
-         		.getNavigator()
-         			.navigateTo(MainView.NAME + "/" + 
-     							path);
+		         		.getNavigator()
+		         			.navigateTo(MainView.NAME + "/" + 
+		     							path);
 
-					
-					Notification.show("Value changed: ",
-	    	                path,	//event.getItem()),
-	    	                Type.HUMANIZED_MESSAGE); 
+//					contentView.setPageTitle(path);
+
+//					Notification.show("Value changed: ",
+//	    	                path,	//event.getItem()),
+//	    	                Type.HUMANIZED_MESSAGE); 
 				}
 			});
 	        

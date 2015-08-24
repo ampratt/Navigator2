@@ -16,24 +16,23 @@ import com.vaadin.ui.Notification.Type;
 
 public class PageTemplate extends VerticalLayout implements View {
 
-	String pageTitle = null;
-	Label h1;
+	Label title = new Label("default");
 	
 	public PageTemplate() {
 		setSizeFull();
 		
 		addComponent(buildTopBar());
 		
-		TabLayout tabs = new TabLayout();
+//		TabLayout tabs = new TabLayout();
+		VerticalLayout tabs = new VerticalLayout();
 		addComponent(tabs);
 		setExpandRatio(tabs, 1);
 //		addComponent(buildTabs());
 	}
 	
 	private HorizontalLayout buildTopBar() {
-		h1 = new Label();
 		//h1.setValue(pageTitle);
-		h1.addStyleName("h1");
+		title.addStyleName("h1");
 		
 		Button saveButton = new Button("Save settings");
 		Button startButton = new Button("Start Test");
@@ -42,14 +41,14 @@ public class PageTemplate extends VerticalLayout implements View {
 		//header.setStyleName("header-padding");
 		header.setWidth("100%");
 		header.setSpacing(true);
-		header.addComponent(h1);
+		header.addComponent(title);
 		header.addComponent(saveButton);
 		header.addComponent(startButton);
 		
-		header.setComponentAlignment(h1, Alignment.MIDDLE_LEFT);
+		header.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 		header.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
 		header.setComponentAlignment(startButton, Alignment.MIDDLE_RIGHT);
-		header.setExpandRatio(h1, 1);
+		header.setExpandRatio(title, 1);
 		header.setExpandRatio(startButton, 0);
 		header.setExpandRatio(saveButton, 2);	
 		
@@ -69,20 +68,12 @@ public class PageTemplate extends VerticalLayout implements View {
 		return header;
 	}
 
-	private Component buildTabs() {
-		TabLayout tabs = new TabLayout();
-		//tabs.getTab(1);
-		    
-	    return tabs;
-	}
-
-	public void setPageTitle(String title){
-		pageTitle = title;
-		h1.setValue(pageTitle);
+	public void setPageTitle(String t){
+		title.setValue(t);
 
 	}
 	public String getPageTitle() {
-		return pageTitle;
+		return title.getValue();
 	}
 
     @Override
@@ -95,8 +86,9 @@ public class PageTemplate extends VerticalLayout implements View {
 //                          "just pass along."));
             return;
         } else {
-        	AnimalViewer str = new AnimalViewer(event.getParameters());
-            setPageTitle(str.toString());
+        	title.setValue(event.getParameters());
+//        	AnimalViewer str = new AnimalViewer(event.getParameters());
+//            setPageTitle(str.toString());
         }
     }
 
