@@ -26,7 +26,7 @@ import com.vaadin.ui.VerticalLayout;
 public class ContentView extends VerticalLayout implements View {
 
     Panel equalPanel = new Panel("equal panel"); 
-	public Label title = new Label("");
+	public static Label title = new Label("");
 //	String pageTitle = null;
     
 	public ContentView() {
@@ -35,8 +35,8 @@ public class ContentView extends VerticalLayout implements View {
 		
 		addComponent(buildTopBar());
 
-		Component contentLayout = buildContentLayout();
-    	addComponent(contentLayout);
+//		Component contentLayout = buildContentLayout();
+//    	addComponent(contentLayout);
 //    	setExpandRatio(contentLayout, 1);
     	
 //		VerticalLayout tabs = new VerticalLayout();
@@ -46,6 +46,7 @@ public class ContentView extends VerticalLayout implements View {
 	}
 
 	public HorizontalLayout buildTopBar() {
+		title.addStyleName("test-case-title");
 		title.addStyleName("h2");
 		
 		Button saveButton = new Button("Save settings");
@@ -57,24 +58,15 @@ public class ContentView extends VerticalLayout implements View {
 		//header.setStyleName("header-padding");
 		topBar.setWidth("100%");
 		topBar.setSpacing(true);
+		
 		topBar.addComponent(title);
 		topBar.addComponent(saveButton);
 		topBar.addComponent(startButton);
-
-		// TESTING
-		Button titleButton = new Button("set title");
-		topBar.addComponent(titleButton);
-		titleButton.addClickListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				//testing purposes
-				setPageTitle("you reset the page title");
-			}
-		});	
-		
 		
 		topBar.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 		topBar.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
 		topBar.setComponentAlignment(startButton, Alignment.MIDDLE_RIGHT);
+		
 		topBar.setExpandRatio(title, 2);
 		topBar.setExpandRatio(startButton, 0);
 		topBar.setExpandRatio(saveButton, 1);	
@@ -123,13 +115,14 @@ public class ContentView extends VerticalLayout implements View {
         grid.addSelectionListener(new SelectionListener() {
             @Override
             public void select(SelectionEvent event) {                   
-//            	navigator.navigateTo(MainView.NAME + "/" + menuitem);
             	getUI()
             		.getNavigator()
             			.navigateTo(MainView.NAME + "/" + 
-        							event.getSelected().toString());	//LoginView.NAME
+        							event.getSelected().toString());
             	
-            	title.setValue(event.getSelected().toString());
+				// update title
+            	setPageTitle(event.getSelected().toString());
+//            	title.setValue(event.getSelected().toString());
             }
         }); 
 
@@ -155,10 +148,10 @@ public class ContentView extends VerticalLayout implements View {
 //	        tree.setItemCaptionMode(ItemCaptionMode.PROPERTY);
 	 
 	        // Expand whole tree
-	        System.out.println("tree.rootItemIds(): " + tree.rootItemIds());
-	        for (final Object id : tree.rootItemIds()) {
+//	        System.out.println("tree.rootItemIds(): " + tree.rootItemIds());
+//	        for (final Object id : tree.rootItemIds()) {
 //	            tree.expandItemsRecursively(id);
-	        }
+//	        }
 	 
 	        tree.addItemClickListener(new ItemClickListener() {
 				@Override
@@ -179,11 +172,9 @@ public class ContentView extends VerticalLayout implements View {
 		         			.navigateTo(MainView.NAME + "/" + 
      							path);
 
-					title.setValue(path);
-					
-//					Notification.show("Value changed: ",
-//	    	                path,	//event.getItem()),
-//	    	                Type.HUMANIZED_MESSAGE); 
+					// update title
+					setPageTitle(path);
+//					title.setValue(path);
 				}
 			});
 	        
@@ -310,11 +301,11 @@ public class ContentView extends VerticalLayout implements View {
 //	}
 
 	
-	public void setPageTitle(String t){
+	public static void setPageTitle(String t){
 		title.setValue(t);
 
 	}
-	public String getPageTitle() {
+	public static String getPageTitle() {
 		return title.getValue();
 	}
 
@@ -322,18 +313,13 @@ public class ContentView extends VerticalLayout implements View {
     public void enter(ViewChangeEvent event) {
         if (event.getParameters() == null
             || event.getParameters().isEmpty()) {
-        	title.setValue("didn't get anything?");
+        	setPageTitle("didn't get anything?");	//title.setValue
             equalPanel.setContent(
                 new Label("Nothing to see here, " +
                           "just pass along."));
             return;
         } else {
-        	String str = event.getParameters();
-//            setPageTitle(str);
-            title.setValue(str);
-            title.setCaption(str);
-            
-        	System.out.println("EVENTS PARAMS WERE: " + event.getParameters().toString());
+            setPageTitle(event.getParameters());	//title.setValue
             equalPanel.setContent(new AnimalViewer(
                 event.getParameters()));
         }

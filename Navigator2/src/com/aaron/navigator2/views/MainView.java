@@ -14,6 +14,8 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -27,7 +29,7 @@ public class MainView extends HorizontalLayout implements View {
     public static final String NAME = "main";
     VerticalLayout menuLayout = new VerticalLayout();
 	ContentView contentView = new ContentView();
-	PageTemplate pageTemplate = new PageTemplate();
+	LandingPageView pageTemplate = new LandingPageView();	//PageTemplate();
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
 //    Navigator navigator;
 //    HorizontalLayout menuAndContentLayout = new HorizontalLayout();
@@ -65,11 +67,16 @@ public class MainView extends HorizontalLayout implements View {
     	// add menu to main view
     	MBPeTMenu menu = new MBPeTMenu();	//navigator
     	addComponent(menu);
+    	setExpandRatio(menu, 1.7f);
     	
     	
     	//Landing Page
+      addComponent(pageTemplate);	
+      setExpandRatio(pageTemplate, 8.3f);    	
     	
-    	
+    	// Content View
+//        addComponent(contentView);	
+//        setExpandRatio(contentView, 8.3f);
     	
     	// add content area to main view
 //	    	ComponentContainer content = new CssLayout();
@@ -77,14 +84,6 @@ public class MainView extends HorizontalLayout implements View {
 //	    	content.setSizeFull();
 //    	addComponent(content);
 //    	setExpandRatio(content, 1.0f);
-    	
-//    	Component contentLayout = buildContentLayout();
-//    	ContentView contentView = new ContentView();
-    	addComponent(contentView);	//pageTemplate
-
-        setExpandRatio(menu, 1.7f);
-        setExpandRatio(contentView, 8.3f);
-        
 //    	new MBPeTNavigator(content);
  
     }        
@@ -98,33 +97,25 @@ public class MainView extends HorizontalLayout implements View {
         		  new Label("Nothing to see here, " +
         				  "just pass along."));
             return;
-        } else if (event.getParameters() == "landingPage") {
-            contentView.equalPanel.setContent(
-          		  new Label("This is the Landing Page"));
+        } else if (event.getParameters().equals("landingPage")) {
+            removeComponent(contentView);
+            addComponent(pageTemplate);
+            setExpandRatio(pageTemplate, 8.3f);
+
               return;
         } else {
-//        	ContentView content = new ContentView();
+        	removeComponent(pageTemplate);
+        	addComponent(contentView);
+            setExpandRatio(contentView, 8.3f);
+
+            // update page title
+            ContentView.setPageTitle(event.getParameters());
+
         	contentView.equalPanel.setContent(new AnimalViewer(
                     event.getParameters()));
         }
     }
 
-    
-//    @Override
-//    public void enter(ViewChangeEvent event) {
-//        if (event.getParameters() == null
-//            || event.getParameters().isEmpty()) {
-//        	pageTemplate.setPageTitle("Nothing to see here, just pass along.");
-//
-//            return;
-//        } else {
-//        	AnimalViewer str = new AnimalViewer(event.getParameters());
-//        	pageTemplate.setPageTitle(str.toString());
-//        }
-//    }
-    
-    
-    
     
 //    public void MenuLayout() {
 //    	menuLayout.addStyleName("menu");
