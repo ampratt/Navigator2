@@ -10,6 +10,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.MenuBar.Command;
+import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
@@ -23,7 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class MBPeTMenu extends CustomComponent{
 
 //	Navigator navigator;
-	final Tree tree = new Tree("Test Cases:");
+	final static Tree tree = new Tree("Test Cases:");
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
     
     // Menu navigation button listener
@@ -121,20 +124,49 @@ public class MBPeTMenu extends CustomComponent{
 
 	@SuppressWarnings("serial")
 	private Component buildUserMenu() {
+		 final Command menuCommand = new Command() {
+		        @Override
+		        public void menuSelected(final MenuItem selectedItem) {
+		        	if (selectedItem.getText().equals("Edit Profile")){
+		        		
+		        	} else if (selectedItem.getText().equals("Preferences")){
+		        		
+		        	} else if (selectedItem.getText().equals("Sign Out")){
+						UI.getCurrent()
+		                	.getNavigator()
+		                		.navigateTo(
+		                				LoginView.NAME);
+		        	}
+		        	
+		            Notification.show("Action " + selectedItem.getText(),
+		                    Type.TRAY_NOTIFICATION);
+		        }
+		    };
+		    
+		MenuBar userMenu = new MenuBar();
+		userMenu.addStyleName("user-menu");
+		
+		MenuItem user = userMenu.addItem("John Doe", null);	// TODO - dynamic username here
+		user.addItem("Edit Profile", menuCommand);
+		user.addItem("Preferences", menuCommand);
+		user.addSeparator();
+		user.addItem("Sign Out", menuCommand);
+		
+
+
+		
 		// Allow going back to the start
 	    Button logout = new Button("logout");
 	    logout.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// TODO Auto-generated method stub
 				UI.getCurrent()
 	                .getNavigator()
-	                .navigateTo(
-                		LoginView.NAME);	//DashboardViewType.REPORTS.getViewName());
-//				navigator.navigateTo(LoginView.NAME);					
+	                	.navigateTo(
+	                			LoginView.NAME);	//DashboardViewType.REPORTS.getViewName());
 			}
 		});
-		return logout;
+		return userMenu;
 	}
 	
 	
@@ -173,6 +205,9 @@ public class MBPeTMenu extends CustomComponent{
 			}
 		});
 		
+		Label divider = new Label("<hr>", ContentMode.HTML);
+		divider.addStyleName("menu-divider");
+		vc.addComponent(divider);
 		
 		// TREE MENU
 		   final Object[][] testCases = new Object[][]{
@@ -185,7 +220,8 @@ public class MBPeTMenu extends CustomComponent{
 	    	        
 	    	
 	    	vc.addComponent(tree);
-	//	    	tree.addStyleName("treemenu");
+	    	tree.addStyleName("tiny");
+//	    	tree.addStyleName("treemenu");
 	    	
 	    	/* Add test cases as root items in the tree. */
 	    	for (int i=0; i<testCases.length; i++) {

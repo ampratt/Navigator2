@@ -24,8 +24,9 @@ public class TabLayout extends TabSheet {
         setSizeFull();
 
         setHeight(100.0f, Unit.PERCENTAGE);
-        //addStyleName(ValoTheme.TABSHEET_FRAMED);
-        addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
+        addStyleName(ValoTheme.TABSHEET_FRAMED);
+        addStyleName(ValoTheme.TABSHEET_EQUAL_WIDTH_TABS);
+//        addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
  
         /*
         for (int i = 1; i < 4; i++) {

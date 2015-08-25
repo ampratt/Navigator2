@@ -99,12 +99,14 @@ public class MainView extends HorizontalLayout implements View {
             return;
         } else if (event.getParameters().equals("landingPage")) {
             removeComponent(contentView);
+            removeComponent(pageTemplate);
             addComponent(pageTemplate);
             setExpandRatio(pageTemplate, 8.3f);
 
               return;
         } else {
         	removeComponent(pageTemplate);
+        	removeComponent(contentView);
         	addComponent(contentView);
             setExpandRatio(contentView, 8.3f);
 

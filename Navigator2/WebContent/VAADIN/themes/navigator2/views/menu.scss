@@ -24,7 +24,17 @@
 			padding-top: 0px; 
 			text-align: center;
 		}
+		
+		.user-menu, v-menubar-menuitem, v-menubar-menuitem-caption {
+			width: 100%;
+		}
+		
+		.menu-divider {
+			padding-left: 1em;
+		}
+
 	}
+	
 	
 	/*
 	.treemenu {
