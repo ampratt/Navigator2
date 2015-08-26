@@ -34,6 +34,7 @@ public class PageTemplate extends VerticalLayout implements View {
 		//h1.setValue(pageTitle);
 		title.addStyleName("h1");
 		
+		Button newUseCaseButton = new Button("New Use Case");
 		Button saveButton = new Button("Save settings");
 		Button startButton = new Button("Start Test");
 		
@@ -46,11 +47,13 @@ public class PageTemplate extends VerticalLayout implements View {
 		header.addComponent(startButton);
 		
 		header.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		header.setComponentAlignment(newUseCaseButton, Alignment.MIDDLE_RIGHT);
 		header.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
 		header.setComponentAlignment(startButton, Alignment.MIDDLE_RIGHT);
 		header.setExpandRatio(title, 1);
+		header.setExpandRatio(newUseCaseButton, 2);
+		header.setExpandRatio(saveButton, 0);	
 		header.setExpandRatio(startButton, 0);
-		header.setExpandRatio(saveButton, 2);	
 		
 	    saveButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
@@ -63,7 +66,13 @@ public class PageTemplate extends VerticalLayout implements View {
 				//testing purposes
 				Notification.show("This will launch the test case to the master", Type.WARNING_MESSAGE);
 			}
-		});		
+		});
+	    newUseCaseButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				//testing purposes
+				Notification.show("This will launch the test case to the master", Type.WARNING_MESSAGE);
+			}
+		});	
 		
 		return header;
 	}

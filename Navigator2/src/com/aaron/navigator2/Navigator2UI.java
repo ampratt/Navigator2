@@ -1,5 +1,7 @@
 package com.aaron.navigator2;
 
+import java.util.logging.Level;
+
 import javax.servlet.annotation.WebServlet;
 
 import com.aaron.navigator2.views.LoginView;
@@ -8,10 +10,12 @@ import com.aaron.navigator2.views.RegistrationView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.ClientConnector;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ConnectorTracker;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -39,5 +43,28 @@ public class Navigator2UI extends UI {
         navigator.addView(RegistrationView.NAME, new RegistrationView(navigator));
         navigator.addView(MainView.NAME, new MainView());	//navigator
     }
+	
+	  private ConnectorTracker tracker;
+
+	  @Override
+	  public ConnectorTracker getConnectorTracker() {
+	    if (this.tracker == null) {
+	      this.tracker =  new ConnectorTracker(this) {
+
+	        @Override
+	        public void registerConnector(ClientConnector connector) {
+	          try {
+	            super.registerConnector(connector);
+	          } catch (RuntimeException e) {
+	            getLogger().log(Level.SEVERE, "Failed connector: {0}", connector.getClass().getSimpleName());
+	            throw e;
+	          }
+	        }
+
+	      };
+	    }
+
+	    return tracker;
+	  }
 
 }

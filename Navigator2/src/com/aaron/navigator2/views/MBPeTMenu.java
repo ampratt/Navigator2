@@ -8,6 +8,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
@@ -55,8 +56,9 @@ public class MBPeTMenu extends CustomComponent{
 	
 	
 	public Component buildContent() {
-	    VerticalLayout menuLayout = new VerticalLayout();
+		VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
     	menuLayout.addStyleName("menu");
+//    	menuLayout.setHeight("100%");
     	
     	menuLayout.addComponent(buildTitle());
         menuLayout.addComponent(buildUserMenu());
@@ -185,23 +187,30 @@ public class MBPeTMenu extends CustomComponent{
 		createTestCase.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-	            // Create new item, set as parent, allow children (= leaf node)
-	            final Object[] itemId = new Object[] {"New Item"};
-	            String name = (String) itemId[0];
-	            tree.addItem(itemId[0].toString());
-//	            final Object itemId = tree.addItem();
-//	            tree.setParent(itemId, target);
-	            tree.setChildrenAllowed(itemId, true);
-	 
-	            // Set the name for this item (we use it as item caption)
-	            final Item item = tree.getItem(itemId);
-//	            final Property name = item
-//	                    .getItemProperty(ExampleUtil.hw_PROPERTY_NAME);
-//	            name.setValue("New Item");
-
-	            // Allow children for the target item, and expand it
-//	            tree.setChildrenAllowed(target, true);
-//	            tree.expandItem(target);
+		        // open window to create item
+				CreateTestCaseWindow sub = new CreateTestCaseWindow();
+		        
+		        // Add it to the root component
+		        UI.getCurrent().addWindow(sub);
+		        
+		        
+//	            // Create new item, set as parent, allow children (= leaf node)
+//	            final Object[] itemId = new Object[] {"New Item"};
+//	            String name = (String) itemId[0];
+//	            tree.addItem(itemId[0].toString());
+////	            final Object itemId = tree.addItem();
+////	            tree.setParent(itemId, target);
+//	            tree.setChildrenAllowed(itemId, true);
+//	 
+//	            // Set the name for this item (we use it as item caption)
+//	            final Item item = tree.getItem(itemId);
+////	            final Property name = item
+////	                    .getItemProperty(ExampleUtil.hw_PROPERTY_NAME);
+////	            name.setValue("New Item");
+//
+//	            // Allow children for the target item, and expand it
+////	            tree.setChildrenAllowed(target, true);
+////	            tree.expandItem(target);
 			}
 		});
 		

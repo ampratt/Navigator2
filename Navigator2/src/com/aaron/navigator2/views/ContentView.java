@@ -16,6 +16,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
@@ -49,27 +50,32 @@ public class ContentView extends VerticalLayout implements View {
 		title.addStyleName("test-case-title");
 		title.addStyleName("h2");
 		
+		Button newUseCaseButton = new Button("New Use Case");
 		Button saveButton = new Button("Save settings");
 		Button startButton = new Button("Start Test");
+		newUseCaseButton.addStyleName("tiny");
 		saveButton.addStyleName("tiny");
 		startButton.addStyleName("tiny");
 	
 		HorizontalLayout topBar = new HorizontalLayout();
-		//header.setStyleName("header-padding");
+		topBar.setStyleName("topBar-layout-padding");
 		topBar.setWidth("100%");
 		topBar.setSpacing(true);
 		
 		topBar.addComponent(title);
+		topBar.addComponent(newUseCaseButton);
 		topBar.addComponent(saveButton);
 		topBar.addComponent(startButton);
 		
 		topBar.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		topBar.setComponentAlignment(newUseCaseButton, Alignment.MIDDLE_RIGHT);
 		topBar.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
 		topBar.setComponentAlignment(startButton, Alignment.MIDDLE_RIGHT);
 		
 		topBar.setExpandRatio(title, 2);
+		topBar.setExpandRatio(newUseCaseButton, 2);
+		topBar.setExpandRatio(saveButton, 0);	
 		topBar.setExpandRatio(startButton, 0);
-		topBar.setExpandRatio(saveButton, 1);	
 		
 	    saveButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
@@ -83,7 +89,17 @@ public class ContentView extends VerticalLayout implements View {
 				Notification.show("This will launch the test case to the master", Type.WARNING_MESSAGE);
 			}
 		});		
-		
+	    newUseCaseButton.addClickListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+		        // open window to create item
+				NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(title.getValue());
+		        
+		        // Add it to the root component
+		        UI.getCurrent().addWindow(sub);
+			}
+		});	
+	    
+	    
 		return topBar;
 	}
 	

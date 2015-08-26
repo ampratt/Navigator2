@@ -26,7 +26,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class MainView extends HorizontalLayout implements View {
     private static final long serialVersionUID = -3398565663865641952L;
 
-    public static final String NAME = "main";
+    public static final String NAME = "MBPeT";
     VerticalLayout menuLayout = new VerticalLayout();
 	ContentView contentView = new ContentView();
 	LandingPageView pageTemplate = new LandingPageView();	//PageTemplate();
@@ -98,16 +98,22 @@ public class MainView extends HorizontalLayout implements View {
         				  "just pass along."));
             return;
         } else if (event.getParameters().equals("landingPage")) {
-            removeComponent(contentView);
-            removeComponent(pageTemplate);
+//            removeComponent(contentView);
+            removeComponent(getComponent(1));	//pageTemplate
             addComponent(pageTemplate);
             setExpandRatio(pageTemplate, 8.3f);
 
               return;
         } else {
-        	removeComponent(pageTemplate);
-        	removeComponent(contentView);
-        	addComponent(contentView);
+//        	removeComponent(pageTemplate);
+        	removeComponent(getComponent(1));	//contentView
+        	try {
+        		addComponent(contentView);        		
+        	} catch (RuntimeException e) {
+        		getUI().getConnectorTracker().markAllConnectorsDirty(); 
+        		getUI().getConnectorTracker().markAllClientSidesUninitialized(); 
+        		getUI().getPage().reload();
+        	}
             setExpandRatio(contentView, 8.3f);
 
             // update page title
