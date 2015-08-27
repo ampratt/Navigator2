@@ -1,11 +1,15 @@
 package com.aaron.navigator2.views;
 
+import com.aaron.navigator2.utils.ExampleUtil;
+import com.vaadin.event.Action;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.event.Action.Handler;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -24,11 +28,15 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class MBPeTMenu extends CustomComponent{
+public class MBPeTMenu extends CustomComponent implements Action.Handler{
 
-//	Navigator navigator;
+	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
 	final static Tree tree = new Tree("Test Cases:");
-	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
+    // Actions for the context menu
+    private static final Action ACTION_ADD = new Action("Add child item");
+    private static final Action ACTION_DELETE = new Action("Delete");
+    private static final Action[] ACTIONS = new Action[] { ACTION_ADD, ACTION_DELETE };
+    String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
     
     // Menu navigation button listener
     class ButtonListener implements Button.ClickListener {
@@ -56,13 +64,13 @@ public class MBPeTMenu extends CustomComponent{
 	
 	
 	public Component buildContent() {
-		VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
+//		VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
     	menuLayout.addStyleName("menu");
 //    	menuLayout.setHeight("100%");
     	
     	menuLayout.addComponent(buildTitle());
         menuLayout.addComponent(buildUserMenu());
-        menuLayout.addComponent(landingPageButton());
+        menuLayout.addComponent(menuButtons());
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
 
@@ -93,22 +101,6 @@ public class MBPeTMenu extends CustomComponent{
         return menuLayout;
                
     }
-
-
-	private Component landingPageButton() {
-		@SuppressWarnings("serial")
-		Button button = new Button("Start page", new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				UI.getCurrent()
-	        		.getNavigator()
-	            		.navigateTo(MainView.NAME + "/" + "landingPage");
-				
-			}
-		});
-		
-		return button;
-	}
 
 
 	private Component buildTitle(){
@@ -172,16 +164,34 @@ public class MBPeTMenu extends CustomComponent{
 	}
 	
 	
-	@SuppressWarnings("serial")
-	private VerticalLayout buildTreeMenu() {
-		// layout holder for menu items
-		VerticalLayout vc = new VerticalLayout();
-		vc.setHeight("100%");
+	private VerticalLayout menuButtons() {
+		VerticalLayout buttons = new VerticalLayout();
+		
+		// landing page button
+		@SuppressWarnings("serial")
+		Button landingButton = new Button("Start page", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				UI.getCurrent()
+	        		.getNavigator()
+	            		.navigateTo(MainView.NAME + "/" + "landingPage");
+				
+			}
+		});
+		landingButton.addStyleName("menu-button-left-align");
+//		button.addStyleName("tiny");
+		landingButton.addStyleName("borderless");
+		buttons.addComponent(landingButton);
+		buttons.setComponentAlignment(landingButton, Alignment.MIDDLE_LEFT);
+		
 		
 		// create test case button
-		Button createTestCase = new Button("+ (new test case)");
-		createTestCase.addStyleName("tiny");
-		vc.addComponent(createTestCase);
+		Button createTestCase = new Button("Create new test case");
+		createTestCase.addStyleName("menu-button-left-align");
+//		createTestCase.addStyleName("tiny");
+		createTestCase.addStyleName("borderless");
+		buttons.addComponent(createTestCase);
+		buttons.setComponentAlignment(createTestCase, Alignment.MIDDLE_LEFT);
 		
         // button listener
 		createTestCase.addClickListener(new ClickListener() {
@@ -213,6 +223,18 @@ public class MBPeTMenu extends CustomComponent{
 ////	            tree.expandItem(target);
 			}
 		});
+		
+		return buttons;
+	}
+	
+	
+	@SuppressWarnings("serial")
+	private VerticalLayout buildTreeMenu() {
+		// layout holder for menu items
+		VerticalLayout vc = new VerticalLayout();
+		vc.setHeight("100%");
+		
+
 		
 		Label divider = new Label("<hr>", ContentMode.HTML);
 		divider.addStyleName("menu-divider");
@@ -265,7 +287,7 @@ public class MBPeTMenu extends CustomComponent{
 	//	        tree.setContainerDataSource(ExampleUtil.getHardwareContainer());
 	 
 	        // Add actions (context menu)
-	//	        sample.addActionHandler(this);
+		    tree.addActionHandler(this);
 	 
 	        // Cause valueChange immediately when the user selects
 	        tree.setImmediate(true);
@@ -289,7 +311,6 @@ public class MBPeTMenu extends CustomComponent{
 					if (!tree.isRoot(event.getItemId())) {
 	//						Object parent = tree.getParent(event.getItemId());
 						String parent = (String) tree.getParent(event.getItemId());
-		            	System.out.println("Parent is: " + parent);
 		            	path = parent+ "/" + selected;
 					}
 					
@@ -337,5 +358,83 @@ public class MBPeTMenu extends CustomComponent{
         return panel;
 	}
 	
+	
+    /*
+     * Returns the set of available actions
+     */
+    public Action[] getActions(Object target, Object sender) {
+    	return ACTIONS;
+    }
+    /*
+     * Handle actions
+     */
+    public void handleAction(final Action action, final Object sender,
+            final Object target) {
+        if (action == ACTION_ADD) {
+        	Object parent = target;
+        	if (!tree.isRoot(target)) {
+        		parent = tree.getParent(target);
+        	}
+	        // open window to create item
+			NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(parent.toString());
+	        
+	        // Add it to the root component
+	        UI.getCurrent().addWindow(sub);
+//	        
+//            // Allow children for the target item, and expand it
+//            tree.setChildrenAllowed(target, true);
+//            tree.expandItem(target);
+// 
+//            // Create new item, set parent, disallow children (= leaf node)
+//            final Object[] itemId = new Object[]{"New Item"};
+//    	    String itemName = (String) (itemId[0]);
+//            tree.addItem(itemName);
+//            tree.setParent(itemName, target);
+//            tree.setChildrenAllowed(itemName, false);
+// 
+//            // Set the name for this item (we use it as item caption)
+//            final Item item = tree.getItem(itemName);
+////            final Property name = item
+////                    .getItemProperty(ExampleUtil.hw_PROPERTY_NAME);
+////            name.setValue("New Item");
+ 
+        } else if (action == ACTION_DELETE) {
+            final Object parent = tree.getParent(target);
+            
+            // if deleted parent item, return to landing page
+            if (tree.isRoot(target)) {
+            	
+            	//if attempted to delete root item that still has children items
+            	if (tree.hasChildren(target)) {
+            		// ask user to confirm
+        	        // open window to create item
+        			ConfirmDeleteMenuItemWindow confirm = new ConfirmDeleteMenuItemWindow(target);
+        	        
+        	        // Add it to the root component
+        	        UI.getCurrent().addWindow(confirm);
+            		
+            	}
+//            	tree.removeItem(target);
+//            	getUI()
+//	            	.getNavigator()
+//	            		.navigateTo(MainView.NAME + "/" + "landingPage");
+            	return;
+            }
+        	
+            tree.removeItem(target);
+
+        	// If the deleted object's parent has no more children collapse the item
+            if (parent != null && tree.getChildren(parent) == null) {
+//            	tree.setChildrenAllowed(parent, false);
+            	tree.collapseItem(parent);
+            }
+            tree.select(parent);
+            //navigate to parent
+            getUI()
+	            .getNavigator()
+	            	.navigateTo(MainView.NAME + "/" + 
+	            			parent);
+        }
+    }
 
 }
