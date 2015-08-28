@@ -23,16 +23,19 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
-@SuppressWarnings("serial")
 public class ContentView extends VerticalLayout implements View {
-
-    Panel equalPanel = new Panel("equal panel"); 
+	private static final long serialVersionUID = -5878465079008311569L;
+	
+	Panel equalPanel = new Panel("equal panel"); 
 	public static Label title = new Label("");
+	Tree tree;
 //	String pageTitle = null;
     
-	public ContentView() {
+	public ContentView(Tree tree) {
 		setSizeFull();
 		this.addStyleName("content");
+		
+		this.tree = tree;
 		
 		addComponent(buildTopBar());
 
@@ -92,7 +95,7 @@ public class ContentView extends VerticalLayout implements View {
 	    newUseCaseButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 		        // open window to create item
-				NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(title.getValue());
+				NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(tree, title.getValue());
 		        
 		        // Add it to the root component
 		        UI.getCurrent().addWindow(sub);
@@ -147,7 +150,6 @@ public class ContentView extends VerticalLayout implements View {
 	
 
 	
-	@SuppressWarnings("serial")
 	private Component buildTreeMenu2() {   
 	    	final Tree tree = new Tree("HierarchicalContainer:");
 	    	tree.setContainerDataSource(createTreeContent());

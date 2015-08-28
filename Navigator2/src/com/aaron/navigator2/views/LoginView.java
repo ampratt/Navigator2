@@ -137,7 +137,6 @@ public class LoginView extends VerticalLayout  implements View {
     }
     
 
-    @SuppressWarnings("serial")
 	private Component buildFields() {
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);

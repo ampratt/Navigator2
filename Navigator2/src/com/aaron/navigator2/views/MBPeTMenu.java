@@ -29,9 +29,15 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class MBPeTMenu extends CustomComponent implements Action.Handler{
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8976097773826956282L;
+	
 	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
-	final static Tree tree = new Tree("Test Cases:");
+//	final static Tree tree = new Tree("Test Cases:");
+	Tree tree;
+	
     // Actions for the context menu
     private static final Action ACTION_ADD = new Action("Add child item");
     private static final Action ACTION_DELETE = new Action("Delete");
@@ -57,8 +63,8 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         }
     }
     
-	public MBPeTMenu() {
-		
+	public MBPeTMenu(Tree tree) {
+		this.tree = tree;
 		setCompositionRoot(buildContent());
 	}
 	
@@ -198,7 +204,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 			@Override
 			public void buttonClick(ClickEvent event) {
 		        // open window to create item
-				CreateTestCaseWindow sub = new CreateTestCaseWindow();
+				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
 		        
 		        // Add it to the root component
 		        UI.getCurrent().addWindow(sub);
@@ -228,7 +234,6 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 	}
 	
 	
-	@SuppressWarnings("serial")
 	private VerticalLayout buildTreeMenu() {
 		// layout holder for menu items
 		VerticalLayout vc = new VerticalLayout();
@@ -237,7 +242,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 
 		
 		Label divider = new Label("<hr>", ContentMode.HTML);
-		divider.addStyleName("menu-divider");
+//		divider.addStyleName("menu-divider");
 		vc.addComponent(divider);
 		
 		// TREE MENU
@@ -376,7 +381,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         		parent = tree.getParent(target);
         	}
 	        // open window to create item
-			NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(parent.toString());
+			NewUseCaseInstanceWindow sub = new NewUseCaseInstanceWindow(tree, parent.toString());
 	        
 	        // Add it to the root component
 	        UI.getCurrent().addWindow(sub);
@@ -408,11 +413,16 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
             	if (tree.hasChildren(target)) {
             		// ask user to confirm
         	        // open window to create item
-        			ConfirmDeleteMenuItemWindow confirm = new ConfirmDeleteMenuItemWindow(target);
+        			ConfirmDeleteMenuItemWindow confirm = new ConfirmDeleteMenuItemWindow(tree, target, 
+        							"<b>" + target.toString() + "</b> has child instances that will be deleted.<br />" +
+									"Delete <b>" + target.toString() + "</b> and all its instances?<br /><br />");
         	        
         	        // Add it to the root component
         	        UI.getCurrent().addWindow(confirm);
-            		
+            	} else {
+           			ConfirmDeleteMenuItemWindow confirm = new ConfirmDeleteMenuItemWindow(tree, target, 
+										"Are you sure you want to delete <b>" + target.toString() + "</b>?<br /><br />");
+	       	        UI.getCurrent().addWindow(confirm);
             	}
 //            	tree.removeItem(target);
 //            	getUI()

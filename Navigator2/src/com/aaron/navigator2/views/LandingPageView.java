@@ -17,23 +17,24 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 
-@SuppressWarnings("serial")
 public class LandingPageView extends VerticalLayout implements View {
+	private static final long serialVersionUID = -5311837216590841111L;
 
-	public LandingPageView() {
-			setSizeFull();
-			this.addStyleName("content");
-		
-	        Label title = new Label("Welcome to the MBPet tool for web application performance testing.");
-	        title.addStyleName("landing-page-title");
-	        title.addStyleName("h2");
-	        
-	        addComponent(title);
-	        addComponent(buildActionButtons());
-	        
+	Tree tree;
+	
+	public LandingPageView(Tree tree) {
+		this.tree = tree;
+		setSizeFull();
+		this.addStyleName("content");
+	
+        Label title = new Label("Welcome to the MBPet tool for web application performance testing.");
+        title.addStyleName("landing-page-title");
+        title.addStyleName("h2");
+        
+        addComponent(title);
+        addComponent(buildActionButtons());
+        
 //	        setComponentAlignment(getComponent(1), Alignment.MIDDLE_CENTER);
-	        
-
 	 }
 	
 	public HorizontalLayout buildActionButtons() {
@@ -45,10 +46,15 @@ public class LandingPageView extends VerticalLayout implements View {
 		
         // button listener
 		createTestCase.addClickListener(new ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3952503576887345886L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 		        // open window to create item
-				CreateTestCaseWindow sub = new CreateTestCaseWindow();
+				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
 		        
 		        // Add it to the root component
 		        UI.getCurrent().addWindow(sub);

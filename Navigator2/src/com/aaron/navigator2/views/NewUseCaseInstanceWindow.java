@@ -7,6 +7,7 @@ import java.util.Date;
 import com.vaadin.data.Item;
 import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -22,20 +23,23 @@ import com.vaadin.ui.Window;
 
 // Define a sub-window by inheritance
 public class NewUseCaseInstanceWindow extends Window {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 898541303993774111L;
 
-	@SuppressWarnings("serial")
-	public NewUseCaseInstanceWindow() {
+	public NewUseCaseInstanceWindow(Tree tree) {
         super("Create new Instance of this Test Case"); // Set window caption
         center();
         setResizable(false);
-        setClosable(true);
+        setClosable(false);
         setModal(true);
 
-        setContent(buildWindowContent("New Instance"));
+        setContent(buildWindowContent(tree, "New Instance"));
 	}
 	
-	@SuppressWarnings("serial")
-	public NewUseCaseInstanceWindow(String parentCase) {
+	
+	public NewUseCaseInstanceWindow(Tree tree, String parentCase) {
         super("Create new Instance of " + stripExcess(parentCase)); // Set window caption
         parentCase = stripExcess(parentCase);
         center();
@@ -43,11 +47,11 @@ public class NewUseCaseInstanceWindow extends Window {
         setClosable(true);
         setModal(true);
 
-        setContent(buildWindowContent(parentCase));
+        setContent(buildWindowContent(tree, parentCase));
 	}
 	
 
-		private Component buildWindowContent(String parentCase) {
+		private Component buildWindowContent(Tree tree, String parentCase) {
         	// Some basic content for the window
             VerticalLayout vc = new VerticalLayout();
             vc.addComponent(new Label("Fill in details for this use case of " + parentCase));
@@ -55,18 +59,17 @@ public class NewUseCaseInstanceWindow extends Window {
             setContent(vc);
           
             // form
-            vc.addComponent(buildCreationForm(parentCase));      
+            vc.addComponent(buildCreationForm(tree, parentCase));      
             
             return vc;
         }
 
-		@SuppressWarnings("serial")
-		private Component buildCreationForm(final String parentCase) {
+		private Component buildCreationForm(final Tree tree, final String parentCase) {
 			FormLayout form = new FormLayout();
 //		        form.addStyleName("outlined");
 	        form.setSizeFull();
 	        form.setSpacing(true);
-	        form.setMargin(true);
+	        form.setMargin(new MarginInfo(true, true, false, true));
 	 
 	        // textfield for name
 	        final TextField name = new TextField("Instance Name");
@@ -95,7 +98,7 @@ public class NewUseCaseInstanceWindow extends Window {
                 	if (name.getValue() == null
                 			|| name.getValue().isEmpty()) {
                 	} else {
-	                	Tree tree = MBPeTMenu.tree;
+//	                	Tree tree = MBPeTMenu.tree;
 	
 	                	// get parent from tree
 	                	System.out.println(tree.getItem(parentCase));
@@ -144,6 +147,7 @@ public class NewUseCaseInstanceWindow extends Window {
 
             HorizontalLayout buttons = new HorizontalLayout();
             buttons.setWidth("100%");
+            buttons.setMargin(new MarginInfo(true, false, false, false));
             buttons.addComponent(submit);
             buttons.addComponent(cancel);
             buttons.setComponentAlignment(submit, Alignment.MIDDLE_LEFT);

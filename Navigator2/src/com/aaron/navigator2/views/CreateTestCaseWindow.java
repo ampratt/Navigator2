@@ -2,6 +2,7 @@ package com.aaron.navigator2.views;
 
 import com.vaadin.data.Item;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -17,40 +18,49 @@ import com.vaadin.ui.Window;
 
 // Define a sub-window by inheritance
 public class CreateTestCaseWindow extends Window {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5370960944210111329L;
 
-	@SuppressWarnings("serial")
-	public CreateTestCaseWindow() {
+	public CreateTestCaseWindow(Tree tree) {
         super("Create a new Test Case"); // Set window caption
         center();
         setResizable(false);
-        setClosable(true);
+        setClosable(false);
         setModal(true);
 
-        setContent(buildWindowContent());
+        setContent(buildWindowContent(tree));
 	}
 	
-        private Component buildWindowContent() {
+        private Component buildWindowContent(final Tree tree) {
         	// Some basic content for the window
             VerticalLayout vc = new VerticalLayout();
-            vc.addComponent(new Label("Fill in details for this Test Case"));
-            vc.setMargin(true);
             setContent(vc);
+            vc.addStyleName("subwindow-margin");
+            vc.setMargin(true);
+            vc.setSpacing(true);
+
+            //label
+            vc.addComponent(new Label("Fill in details for this Test Case"));
           
             // form
-            vc.addComponent(buildCreationForm());      
+            vc.addComponent(buildCreationForm(tree));
             
             return vc;
         }
 
-		@SuppressWarnings("serial")
-		private Component buildCreationForm() {
+		private Component buildCreationForm(final Tree tree) {
 			FormLayout form = new FormLayout();
 //	        form.addStyleName("outlined");
 	        form.setSizeFull();
+	        form.setMargin(new MarginInfo(true, true, false, true));
 	        form.setSpacing(true);
 	 
 	        final TextField title = new TextField("Title");
 	        title.setWidth(100.0f, Unit.PERCENTAGE);
+	        title.addStyleName("hide-required-asterisk");
+	        title.setImmediate(true);
 	        title.focus();
 	        title.setValidationVisible(false);
 	        title.setRequired(true);
@@ -73,7 +83,7 @@ public class CreateTestCaseWindow extends Window {
 	                    // Create new item, set as parent, allow children (= leaf node)
 	                    final Object[] itemId = new Object[] {title.getValue()};
 	                    String treeItem = (String) itemId[0];
-	                    Tree tree = MBPeTMenu.tree;
+//	                    Tree tree = MBPeTMenu.tree;
 	                    tree.addItem(treeItem);
 	                    tree.setChildrenAllowed(treeItem, true);
 	//                    final Object itemId = tree.addItem();
@@ -114,6 +124,7 @@ public class CreateTestCaseWindow extends Window {
 
             HorizontalLayout buttons = new HorizontalLayout();
             buttons.setWidth("100%");
+            buttons.setMargin(new MarginInfo(true, false, false, false));
             buttons.addComponent(submit);
             buttons.addComponent(cancel);
             buttons.setComponentAlignment(submit, Alignment.MIDDLE_LEFT);

@@ -32,6 +32,7 @@
 @import "views/login";
 @import "views/menu";
 @import "views/content";
+@import "views/windows";
 /*
 */
 
@@ -42,11 +43,12 @@
   @include navigator2-login-view;
   @include navigator2-menu-view;
   @include navigator2-content-view;
-/*  
-*/
-//@include dashboard-dashboard-view;
-  //@include dashboard-schedule-view;
-  //@include dashboard-sales-view;
-  //@include dashboard-transactions-view;
-  //@include dashboard-reports-view;
+  @include navigator2-windows-view;
+
+
+/* //@include dashboard-dashboard-view; */
+/*   //@include dashboard-schedule-view; */
+/*   //@include dashboard-sales-view; */
+/*   //@include dashboard-transactions-view; */
+/*   //@include dashboard-reports-view; */
 }

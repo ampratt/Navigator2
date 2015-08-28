@@ -20,19 +20,29 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-@SuppressWarnings("serial")
 @Theme("navigator2")
 public class Navigator2UI extends UI {
-
-    Navigator  navigator;
+	private static final long serialVersionUID = -4150121950677547344L;
+	
+	Navigator  navigator;
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = Navigator2UI.class)
 	public static class Servlet extends VaadinServlet {
+		private static final long serialVersionUID = 304105821396553550L;
 	}
 
 	@Override
     protected void init(VaadinRequest request) {
+        addDetachListener(new DetachListener() {
+			private static final long serialVersionUID = -7633078219228421931L;
+
+			@Override
+            public void detach(DetachEvent event) {
+                releaseResources();
+            }
+        });
+        
         getPage().setTitle("Navigation2 Example");
         
         // Create a navigator to control the views
@@ -44,19 +54,30 @@ public class Navigator2UI extends UI {
         navigator.addView(MainView.NAME, new MainView());	//navigator
     }
 	
+    private void releaseResources() {
+        // Redirect this page immediately
+        getPage().setLocation("/MBPeT");
+        
+        // Close the session
+        getSession().close();
+    }
+	
 	  private ConnectorTracker tracker;
 
 	  @Override
 	  public ConnectorTracker getConnectorTracker() {
 	    if (this.tracker == null) {
 	      this.tracker =  new ConnectorTracker(this) {
+			private static final long serialVersionUID = -2456104393122612400L;
 
-	        @Override
+			@Override
 	        public void registerConnector(ClientConnector connector) {
 	          try {
 	            super.registerConnector(connector);
 	          } catch (RuntimeException e) {
-	            getLogger().log(Level.SEVERE, "Failed connector: {0}", connector.getClass().getSimpleName());
+	            getLogger().log(Level.SEVERE, "FAILED CONNECTOR: {0}", connector.getClass().getSimpleName());
+	            System.out.println("FAILED CONNECTOR: {" + connector.getConnectorId() + "} " 
+	            					+ connector.getClass().getSimpleName());
 	            throw e;
 	          }
 	        }

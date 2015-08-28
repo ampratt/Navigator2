@@ -15,6 +15,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Tree;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
@@ -27,9 +28,10 @@ public class MainView extends HorizontalLayout implements View {
     private static final long serialVersionUID = -3398565663865641952L;
 
     public static final String NAME = "MBPeT";
+	final static Tree tree = new Tree("Test Cases:");
     VerticalLayout menuLayout = new VerticalLayout();
-	ContentView contentView = new ContentView();
-	LandingPageView pageTemplate = new LandingPageView();	//PageTemplate();
+	ContentView contentView = new ContentView(tree);
+	LandingPageView pageTemplate = new LandingPageView(tree);	//PageTemplate();
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
 //    Navigator navigator;
 //    HorizontalLayout menuAndContentLayout = new HorizontalLayout();
@@ -56,7 +58,6 @@ public class MainView extends HorizontalLayout implements View {
     }
     
     
-    @SuppressWarnings("serial")
 	public MainView() {		//final Navigator navigator
 //    	this.navigator = navigator;
 
@@ -65,7 +66,7 @@ public class MainView extends HorizontalLayout implements View {
     	addStyleName("mainview");
     	
     	// add menu to main view
-    	MBPeTMenu menu = new MBPeTMenu();	//navigator
+    	MBPeTMenu menu = new MBPeTMenu(tree);	//navigator
     	addComponent(menu);
     	setExpandRatio(menu, 1.7f);
     	
