@@ -24,6 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 public class Navigator2UI extends UI {
 	private static final long serialVersionUID = -4150121950677547344L;
 	
+	public static final String PERSISTENCE_UNIT = "Navigator2";
 	Navigator  navigator;
 
 	@WebServlet(value = "/*", asyncSupported = true)

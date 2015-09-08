@@ -1,5 +1,6 @@
-package com.aaron.navigator2.views;
+package com.aaron.navigator2.ui;
 
+import com.aaron.navigator2.views.MainView;
 import com.vaadin.data.Item;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.MarginInfo;

@@ -1,5 +1,8 @@
 package com.aaron.navigator2.views;
 
+import com.aaron.navigator2.ui.ConfirmDeleteMenuItemWindow;
+import com.aaron.navigator2.ui.CreateTestCaseWindow;
+import com.aaron.navigator2.ui.NewUseCaseInstanceWindow;
 import com.aaron.navigator2.utils.ExampleUtil;
 import com.vaadin.event.Action;
 import com.vaadin.data.Item;
@@ -204,10 +207,10 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 			@Override
 			public void buttonClick(ClickEvent event) {
 		        // open window to create item
-				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
+//				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
 		        
 		        // Add it to the root component
-		        UI.getCurrent().addWindow(sub);
+		        UI.getCurrent().addWindow(new CreateTestCaseWindow(tree));
 		        
 		        
 //	            // Create new item, set as parent, allow children (= leaf node)

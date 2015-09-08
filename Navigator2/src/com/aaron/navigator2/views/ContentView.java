@@ -1,6 +1,8 @@
 package com.aaron.navigator2.views;
 
 import com.aaron.navigator2.tabs.TabLayout;
+import com.aaron.navigator2.ui.AnimalViewer;
+import com.aaron.navigator2.ui.NewUseCaseInstanceWindow;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;

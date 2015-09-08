@@ -1,5 +1,6 @@
 package com.aaron.navigator2.views;
 
+import com.aaron.navigator2.ui.AnimalViewer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
