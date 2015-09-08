@@ -6,6 +6,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -15,7 +16,7 @@ public class RegistrationView extends VerticalLayout implements View {
 
     public static final String NAME = "registration";
 
-    public RegistrationView(final Navigator navigator) {
+    public RegistrationView() {		//final Navigator navigator
         setSizeFull();
         
 //        LoginForm login = new LoginForm();
@@ -27,7 +28,8 @@ public class RegistrationView extends VerticalLayout implements View {
             private static final long serialVersionUID = -1809072471885383781L;
             @Override
             public void buttonClick(ClickEvent event) {
-                navigator.navigateTo(LoginView.NAME);
+                UI.getCurrent().getNavigator()
+                	.navigateTo(LoginView.NAME);
             }
         });
         addComponent(button);

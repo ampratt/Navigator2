@@ -28,7 +28,9 @@ import com.vaadin.ui.Button.ClickEvent;
 public class MainView extends HorizontalLayout implements View {
     private static final long serialVersionUID = -3398565663865641952L;
 
-    public static final String NAME = "MBPeT";
+    public static final String NAME = "";	//"MBPeT";
+    
+    MBPeTMenu menu;
 	final static Tree tree = new Tree("Test Cases:");
     VerticalLayout menuLayout = new VerticalLayout();
 	ContentView contentView = new ContentView(tree);
@@ -67,7 +69,8 @@ public class MainView extends HorizontalLayout implements View {
     	addStyleName("mainview");
     	
     	// add menu to main view
-    	MBPeTMenu menu = new MBPeTMenu(tree);	//navigator
+    	// menu CREATED in enter()
+//    	menu = new MBPeTMenu(tree);	//navigator
     	addComponent(menu);
     	setExpandRatio(menu, 1.7f);
     	
@@ -93,6 +96,12 @@ public class MainView extends HorizontalLayout implements View {
     
     @Override
     public void enter(ViewChangeEvent event) {
+    	// Get the user name from the session
+        String username = String.valueOf(getSession().getAttribute("user"));
+
+        // And pass it to the menu to disaply it
+        menu = new MBPeTMenu(tree, username);
+        
         if (event.getParameters() == null
             || event.getParameters().isEmpty()) {
           contentView.equalPanel.setContent(

@@ -1,5 +1,7 @@
 package com.aaron.navigator2.views;
 
+import com.vaadin.data.validator.AbstractValidator;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -23,10 +25,14 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
 /** A start view for navigating to the main view */
-public class LoginView extends VerticalLayout  implements View {
+public class LoginView extends VerticalLayout  implements View, Button.ClickListener {
     private static final long serialVersionUID = -3398565663865641952L;
 
-    public static final String NAME = "";
+    public static final String NAME = "login"; 	//"";
+    
+    private TextField username;
+    private PasswordField password;
+    private Button loginButton;
     
     public LoginView() {
     	setSpacing(true);
@@ -34,10 +40,19 @@ public class LoginView extends VerticalLayout  implements View {
     	this.addStyleName("login-background-grey");
 //    	addComponent(buildContent());
     	
-        Component loginForm = buildLoginForm();
-        addComponent(loginForm);
-        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
+//        final VerticalLayout loginPanel = new VerticalLayout();
+//        loginPanel.setSizeUndefined();
+        this.addStyleName("login-panel");
 
+        addComponent(buildLabels());
+        addComponent(buildFields());
+        addComponent(buildRegistrationFields());
+        
+//        Component loginForm = buildLoginForm();
+//        addComponent(loginForm);
+//        setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);	//loginForm
+
+        
         // welcome notification
         Notification notification = new Notification(
                 "Welcome to Dashboard Demo");
@@ -50,54 +65,25 @@ public class LoginView extends VerticalLayout  implements View {
 //        notification.show(Page.getCurrent());
     }        
     
-    private Component buildContent() {
-    	setSizeFull();
-
-        Component loginForm = buildLoginForm();
-        addComponent(loginForm);
-        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
-
-        Notification notification = new Notification(
-                "Welcome to the MBPeT Design Demo");
-        notification
-                .setDescription("<span>This application is not real, it only demonstrates an application built with the <a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>");
-        notification.setHtmlContentAllowed(true);
-        notification.setStyleName("tray dark small closable login-help");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(20000);
-        notification.show(Page.getCurrent());
-    	
-    	
-//        Button button = new Button("Login",
-//                new Button.ClickListener() {
-//            private static final long serialVersionUID = -1809072471885383781L;
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//            	UI.getCurrent()
-//        			.getNavigator()
-//            			.navigateTo(MainView.NAME);
-////                navigator.navigateTo(MainView.NAME);
-//            }
-//        });
-//        addComponent(button);
-////        setComponentAlignment(button, Alignment.MIDDLE_CENTER);
-//        
-//        
-//        Button registerButton = new Button("create user account",
-//                new Button.ClickListener() {
-//					@Override
-//					public void buttonClick(ClickEvent event) {
-//						// TODO Auto-generated method stub
-//						UI.getCurrent()
-//	        			.getNavigator()
-//	            			.navigateTo(RegistrationView.NAME);
-////						navigator.navigateTo(RegistrationView.NAME);
-//					}
-//				});
-//   		addComponent(registerButton);
-//        setComponentAlignment(registerButton, Alignment.MIDDLE_CENTER);
-		return null;
-	}
+//    private Component buildContent() {
+//    	setSizeFull();
+//
+//        Component loginForm = buildLoginForm();
+//        addComponent(loginForm);
+//        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
+//
+//        Notification notification = new Notification(
+//                "Welcome to the MBPeT Design Demo");
+//        notification
+//                .setDescription("<span>This application is not real, it only demonstrates an application built with the <a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>");
+//        notification.setHtmlContentAllowed(true);
+//        notification.setStyleName("tray dark small closable login-help");
+//        notification.setPosition(Position.BOTTOM_CENTER);
+//        notification.setDelayMsec(20000);
+//        notification.show(Page.getCurrent());
+//    	
+//		return null;
+//	}
     
     private Component buildLoginForm() {
         final VerticalLayout loginPanel = new VerticalLayout();
@@ -137,37 +123,47 @@ public class LoginView extends VerticalLayout  implements View {
     }
     
 
-	private Component buildFields() {
+	public Component buildFields() {
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        username = new TextField("Username");
         username.setIcon(FontAwesome.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-
-        final PasswordField password = new PasswordField("Password");
+        username.setRequired(true);
+        username.setValue("test@test.com");
+        username.addValidator(new EmailValidator(
+                "Username must be an email address"));
+        username.setInvalidAllowed(false);
+        
+        password = new PasswordField("Password");
         password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        password.addValidator(new PasswordValidator());
+        password.setRequired(true);
+        password.setValue("passw0rd");
+        password.setNullRepresentation("");
+        
+        
+        loginButton = new Button("Sign In", this);
+        loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        loginButton.setClickShortcut(KeyCode.ENTER);
+        loginButton.focus();
 
-        final Button signin = new Button("Sign In");
-        signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        signin.setClickShortcut(KeyCode.ENTER);
-        signin.focus();
+        fields.addComponents(username, password, loginButton);
+        fields.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
 
-        fields.addComponents(username, password, signin);
-        fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
-
-        signin.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(final ClickEvent event) {
-            	UI.getCurrent()
-    			.getNavigator()
-        			.navigateTo(MainView.NAME+ "/" + "landingPage");
-//                DashboardEventBus.post(new UserLoginRequestedEvent(username
-//                        .getValue(), password.getValue()));
-            }
-        });
+//        loginButton.addClickListener(new ClickListener() {
+//            @Override
+//            public void buttonClick(final ClickEvent event) {
+//            	UI.getCurrent()
+//    			.getNavigator()
+//        			.navigateTo(MainView.NAME+ "/" + "landingPage");
+////                DashboardEventBus.post(new UserLoginRequestedEvent(username
+////                        .getValue(), password.getValue()));
+//            }
+//        });
         		
         return fields;
     }
@@ -185,8 +181,8 @@ public class LoginView extends VerticalLayout  implements View {
 					public void buttonClick(ClickEvent event) {
 						// TODO Auto-generated method stub
 						UI.getCurrent()
-	        			.getNavigator()
-	            			.navigateTo(RegistrationView.NAME);
+		        			.getNavigator()
+		            			.navigateTo(RegistrationView.NAME);
 //						navigator.navigateTo(RegistrationView.NAME);
 					}
 				});
@@ -204,4 +200,64 @@ public class LoginView extends VerticalLayout  implements View {
         Notification.show("Welcome to the MBPeT design demo", 
         			Notification.Type.TRAY_NOTIFICATION);
     }
+	
+    // Validator for validating the passwords
+    private static final class PasswordValidator extends
+            AbstractValidator<String> {
+
+        public PasswordValidator() {
+            super("The password provided is not valid");
+        }
+
+        @Override
+        protected boolean isValidValue(String value) {
+            // Password must be at least 8 characters long and contain at least one number
+            if (value != null
+                    && (value.length() < 8 || !value.matches(".*\\d.*"))) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public Class<String> getType() {
+            return String.class;
+        }
+    }
+
+    @Override
+    public void buttonClick(ClickEvent event) {
+        // Validate the fields using the navigator. By using validators for the
+        // fields we reduce the amount of queries we have to use to the database
+        // for wrongly entered passwords
+        if (!username.isValid() || !password.isValid()) {
+            return;
+        }
+
+        String usernameStr = username.getValue();
+        String password = this.password.getValue();
+
+        // Credentials were valid.
+        // proceed to: Validate username and password with database here. For examples sake
+        // I use a dummy username and password.
+        boolean isValid = usernameStr.equals("test@test.com")
+                && password.equals("passw0rd");
+
+        if (isValid) {
+
+            // Store the current user in the service session
+            getSession().setAttribute("user", usernameStr);
+
+            // Navigate to main view
+            getUI().getNavigator().navigateTo(MainView.NAME + "/" + "landingPage");	//SimpleLoginMainView.NAME
+
+        } else {
+
+            // Wrong password clear the password field and refocuses it
+            this.password.setValue(null);
+            this.password.focus();
+
+        }
+    }
+    
 }
