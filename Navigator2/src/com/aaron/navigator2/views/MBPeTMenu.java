@@ -37,7 +37,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 	 */
 	private static final long serialVersionUID = -8976097773826956282L;
 	
-    public static final String NAME = "";
+    public static final String NAME = "MBPeT";
 	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
 //	final static Tree tree = new Tree("Test Cases:");
 	Tree tree;
@@ -58,7 +58,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         }
 
         @Override
-        public void buttonClick(ClickEvent event) { 
+        public void buttonClick(ClickEvent event) {
             // Navigate to a specific state
         	UI.getCurrent()
         		.getNavigator()
@@ -67,19 +67,19 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         }
     }
     
-	public MBPeTMenu(Tree tree, String username) {
+	public MBPeTMenu(Tree tree) {
 		this.tree = tree;
-		setCompositionRoot(buildContent(username));
+		setCompositionRoot(buildContent());
 	}
 	
 	
-	public Component buildContent(String username) {
+	public Component buildContent() {
 //		VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
     	menuLayout.addStyleName("menu");
 //    	menuLayout.setHeight("100%");
     	
     	menuLayout.addComponent(buildTitle());
-        menuLayout.addComponent(buildUserMenu(username));
+        menuLayout.addComponent(buildUserMenu());
         menuLayout.addComponent(menuButtons());
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
@@ -127,7 +127,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 	
 
 	@SuppressWarnings("serial")
-	private Component buildUserMenu(String username) {
+	private Component buildUserMenu() {
 		 final Command menuCommand = new Command() {
 		        @Override
 		        public void menuSelected(final MenuItem selectedItem) {
@@ -137,10 +137,10 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		        		
 		        	} else if (selectedItem.getText().equals("Sign Out")){
 			            // "Logout" the user
-			            getSession().setAttribute("user", null);
+			            getSession().setAttribute("username", null);
 
 			            // Refresh this view, should redirect to login view
-			            UI.getCurrent().getNavigator().navigateTo(NAME);
+			            UI.getCurrent().getNavigator().navigateTo("");
 		        	}
 		        	
 		            Notification.show("Action " + selectedItem.getText(),
@@ -148,10 +148,13 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		        }
 		    };
 		    
+    	// Get the user name from the session
+        String usernameStr = String.valueOf(getSession().getAttribute("username"));
+		    
 		MenuBar userMenu = new MenuBar();
 		userMenu.addStyleName("user-menu");
 		
-		MenuItem user = userMenu.addItem(username, null);	// TODO - dynamic username here
+		MenuItem user = userMenu.addItem(usernameStr, null);	// TODO - dynamic username here
 		user.addItem("Edit Profile", menuCommand);
 		user.addItem("Preferences", menuCommand);
 		user.addSeparator();

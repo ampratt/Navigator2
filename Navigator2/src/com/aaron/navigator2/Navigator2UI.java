@@ -38,15 +38,15 @@ public class Navigator2UI extends UI {
 	}
 
 	@Override
-    protected void init(VaadinRequest request) {           
-        addDetachListener(new DetachListener() {
-			private static final long serialVersionUID = -7633078219228421931L;
-
-			@Override
-            public void detach(DetachEvent event) {
-                releaseResources();
-            }
-        });
+    protected void init(VaadinRequest request) {
+//        addDetachListener(new DetachListener() {
+//			private static final long serialVersionUID = -7633078219228421931L;
+//
+//			@Override
+//            public void detach(DetachEvent event) {
+//                releaseResources();
+//            }
+//        });
         
         getPage().setTitle("Navigation2 Example");
         
@@ -57,13 +57,12 @@ public class Navigator2UI extends UI {
         new Navigator(this, this);
         
         // Create and register the views
-
-        getNavigator().addView(LoginView.NAME, new LoginView());	//("", new LoginView());
-        getNavigator().addView(MainView.NAME, new MainView());	//navigator
-        getNavigator().addView(RegistrationView.NAME, new RegistrationView());
+        getNavigator().addView("", LoginView.class);	//("", new LoginView());
+        getNavigator().addView(MainView.NAME, MainView.class);	//navigator
+        getNavigator().addView(RegistrationView.NAME, RegistrationView.class);
         
         //
-        // We use a view change handler to ensure the user is always redirected
+        // view change handler to ensure the user is always redirected
         // to the login view if the user is not logged in.
         //
         getNavigator().addViewChangeListener(new ViewChangeListener() {
@@ -71,7 +70,7 @@ public class Navigator2UI extends UI {
             public boolean beforeViewChange(ViewChangeEvent event) {
 
                 // Check if a user has logged in
-                boolean isLoggedIn = getSession().getAttribute("user") != null;
+                boolean isLoggedIn = getSession().getAttribute("username") != null;
                 boolean isLoginView = event.getNewView() instanceof LoginView;
 
                 if (!isLoggedIn && !isLoginView) {
@@ -94,6 +93,8 @@ public class Navigator2UI extends UI {
 
             }
         });
+        
+//        getNavigator().navigateTo("");
     }
 	
     private void releaseResources() {
