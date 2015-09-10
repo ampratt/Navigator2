@@ -10,6 +10,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -18,6 +19,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 
 /** A start view for navigating to the main view */
@@ -26,6 +28,7 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
 
     public static final String NAME = "";
     
+    VerticalLayout layoutPanel;
     private TextField username;
     private PasswordField password;
     private Button loginButton;
@@ -34,15 +37,19 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
     	setSpacing(true);
     	setSizeFull();
     	this.addStyleName("login-background-grey");
-//    	addComponent(buildContent());
-    	
-//        final VerticalLayout loginPanel = new VerticalLayout();
-//        loginPanel.setSizeUndefined();
-        this.addStyleName("login-panel");
 
-        addComponent(buildLabels());
-        addComponent(buildFields());
-        addComponent(buildRegistrationFields());
+        // The view root layout
+    	layoutPanel = new VerticalLayout();
+        layoutPanel.setSizeFull();
+        layoutPanel.setSpacing(true);
+        layoutPanel.addStyleName("login-panel");
+        addComponent(layoutPanel);
+        setComponentAlignment(layoutPanel, Alignment.MIDDLE_CENTER);	//loginForm
+
+
+        layoutPanel.addComponent(buildLabels());
+        layoutPanel.addComponent(buildFields());
+        layoutPanel.addComponent(buildRegistrationFields());
         welcomeNotification();
 //        Component loginForm = buildLoginForm();
 //        addComponent(loginForm);
@@ -80,25 +87,25 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
         fields.addStyleName("fields");
 
         username = new TextField("Username");
-//        username.setIcon(FontAwesome.USER);
-//        username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        username.setRequired(true);
-        username.setInputPrompt("Your username (eg. test@test.com)");
+        username.setIcon(FontAwesome.USER);
+        username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        username.setRequired(true);
+//        username.setInputPrompt("Your username (eg. test@test.com)");
 //        username.setValue("test@test.com");
-        username.addValidator(new EmailValidator(
-                "Username must be an email address"));
-        username.setInvalidAllowed(false);
+//        username.addValidator(new EmailValidator(
+//                "Username must be an email address"));
+//        username.setInvalidAllowed(false);
         
         password = new PasswordField("Password");
-//        password.setIcon(FontAwesome.LOCK);
-//        password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        password.addValidator(new PasswordValidator());
-        password.setRequired(true);
-        password.setValue("passw0rd");
-        password.setNullRepresentation("");
+        password.setIcon(FontAwesome.LOCK);
+        password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+//        password.addValidator(new PasswordValidator());
+//        password.setRequired(true);
+//        password.setValue("passw0rd");
+//        password.setNullRepresentation("");
         
         
-        loginButton = new Button("Sign In", this);
+        loginButton = new Button("Sign In");	//, this
         loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
         loginButton.setClickShortcut(KeyCode.ENTER);
 //        loginButton.focus();
@@ -106,16 +113,14 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
         fields.addComponents(username, password, loginButton);
         fields.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
 
-//        loginButton.addClickListener(new ClickListener() {
-//            @Override
-//            public void buttonClick(final ClickEvent event) {
-//            	UI.getCurrent()
-//    			.getNavigator()
-//        			.navigateTo(MainView.NAME+ "/" + "landingPage");
-////                DashboardEventBus.post(new UserLoginRequestedEvent(username
-////                        .getValue(), password.getValue()));
-//            }
-//        });
+        loginButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(final ClickEvent event) {
+            	UI.getCurrent()
+    				.getNavigator()
+        				.navigateTo(MainView.NAME+ "/" + "landingPage");
+            }
+        });
         		
         return fields;
     }
@@ -193,13 +198,13 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
         // Credentials were valid.
         // proceed to: Validate username and password with database here. For examples sake
         // I use a dummy username and password.
-        boolean isValid = usernameStr.equals("test@test.com")
-                && password.equals("passw0rd");
+        boolean isValid = usernameStr.equals("")
+                && password.equals("");	//passw0rd
 
         if (isValid) {
 
             // Store the current user in the service session
-            getSession().setAttribute("username", usernameStr);
+            getSession().setAttribute("user", usernameStr);
 
             // Navigate to main view
             UI.getCurrent().getNavigator().navigateTo(MainView.NAME + "/" + "landingPage");	//SimpleLoginMainView.NAME

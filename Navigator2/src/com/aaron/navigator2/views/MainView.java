@@ -11,6 +11,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,16 +26,17 @@ import com.vaadin.ui.Button.ClickEvent;
 
 /** Main view with a menu (with declarative layout design) */
 //@DesignRoot
-public class MainView extends HorizontalLayout implements View {
+public class MainView extends HorizontalLayout  implements View {
     private static final long serialVersionUID = -3398565663865641952L;
 
-    public static final String NAME = "MBPeT";	//"MBPeT";
+    public static final String NAME = "MBPeT";
     
     MBPeTMenu menu;
+//    private HorizontalLayout rootLayout;
 	final static Tree tree = new Tree("Test Cases:");
     VerticalLayout menuLayout = new VerticalLayout();
 	ContentView contentView = new ContentView(tree);
-	LandingPageView pageTemplate = new LandingPageView(tree);	//PageTemplate();
+	LandingPageView lanndingPage = new LandingPageView(tree);	//PageTemplate();
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
 //    Navigator navigator;
 //    HorizontalLayout menuAndContentLayout = new HorizontalLayout();
@@ -65,8 +67,8 @@ public class MainView extends HorizontalLayout implements View {
 //    	this.navigator = navigator;
 
 //    	setSpacing(true);
-    	setSizeFull();
-    	addStyleName("mainview");
+		setSizeFull();
+		addStyleName("mainview");
     	
     	// add menu to main view
     	// menu CREATED in enter()
@@ -76,8 +78,8 @@ public class MainView extends HorizontalLayout implements View {
     	
     	
     	//Landing Page
-      addComponent(pageTemplate);	
-      setExpandRatio(pageTemplate, 8.3f);    	
+    	addComponent(lanndingPage);	
+    	setExpandRatio(lanndingPage, 8.3f);    	
     	
     	// Content View
 //        addComponent(contentView);	
@@ -90,17 +92,18 @@ public class MainView extends HorizontalLayout implements View {
 //    	addComponent(content);
 //    	setExpandRatio(content, 1.0f);
 //    	new MBPeTNavigator(content);
- 
+    	
+//    	setCompositionRoot(rootLayout);
     }        
     
     
     @Override
     public void enter(ViewChangeEvent event) {
     	// Get the user name from the session
-        String username = String.valueOf(getSession().getAttribute("username"));
-
-        // And pass it to the menu to disaply it
-        Notification.show("welcome: " + username);
+//        String username = String.valueOf(getSession().getAttribute("user"));
+//
+//        // And pass it to the menu to disaply it
+//        Notification.show("welcome: " + username);
         
         if (event.getParameters() == null
             || event.getParameters().isEmpty()) {
@@ -110,28 +113,27 @@ public class MainView extends HorizontalLayout implements View {
             return;
         } else if (event.getParameters().equals("landingPage")) {
 //            removeComponent(contentView);
-            removeComponent(getComponent(1));	//pageTemplate
-            addComponent(pageTemplate);
-            setExpandRatio(pageTemplate, 8.3f);
+        	removeComponent(getComponent(1));	//pageTemplate
+            addComponent(lanndingPage);
+            setExpandRatio(lanndingPage, 8.3f);
 
               return;
         } else {
-//        	removeComponent(pageTemplate);
         	removeComponent(getComponent(1));	//contentView
         	try {
         		addComponent(contentView);        		
+        		setExpandRatio(contentView, 8.3f);
+        		
+        		// update page title
+        		ContentView.setPageTitle(event.getParameters());
+        		
+        		contentView.equalPanel.setContent(new AnimalViewer(
+        				event.getParameters()));
         	} catch (RuntimeException e) {
         		getUI().getConnectorTracker().markAllConnectorsDirty(); 
         		getUI().getConnectorTracker().markAllClientSidesUninitialized(); 
         		getUI().getPage().reload();
         	}
-            setExpandRatio(contentView, 8.3f);
-
-            // update page title
-            ContentView.setPageTitle(event.getParameters());
-
-        	contentView.equalPanel.setContent(new AnimalViewer(
-                    event.getParameters()));
         }
     }
 

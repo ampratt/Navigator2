@@ -37,7 +37,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 	 */
 	private static final long serialVersionUID = -8976097773826956282L;
 	
-    public static final String NAME = "MBPeT";
+//    public static final String NAME = "MBPeT";
 	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
 //	final static Tree tree = new Tree("Test Cases:");
 	Tree tree;
@@ -84,30 +84,6 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
 
-//        menuButtons.addComponent(new Button("Pig",
-//        		new ButtonListener("pig")));
-//        menuButtons.addComponent(new Button("Cat",
-//        		new ButtonListener("cat")));
-//        menuButtons.addComponent(new Button("Dog",      
-//        		new ButtonListener("dog")));
-//        menuButtons.addComponent(new Button("Reindeer",
-//        		new ButtonListener("reindeer")));
-//        menuButtons.addComponent(new Button("Penguin",
-//        		new ButtonListener("penguin")));
-//        menuButtons.addComponent(new Button("Sheep",
-//        		new ButtonListener("sheep")));
-        
-        
-//        menuAndContentLayout.setSpacing(true);
-//        menuAndContentLayout.setSizeFull();
-//        addComponent(menuLayout);		//menuAndContentLayout
-////        menuAndContentLayout.addComponent(equalPanel);
-//        setExpandRatio(menuLayout, 2);	//menuAndContentLayout
-//        menuAndContentLayout.setExpandRatio(equalPanel, 3);
-//        addComponent(equalPanel);
-//        addComponent(logout);
-//        addComponent(menuAndContentLayout);
-//        addComponent(menuContent);
         return menuLayout;
                
     }
@@ -137,10 +113,12 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		        		
 		        	} else if (selectedItem.getText().equals("Sign Out")){
 			            // "Logout" the user
-			            getSession().setAttribute("username", null);
+//			            getSession().setAttribute("user", null);
 
 			            // Refresh this view, should redirect to login view
-			            UI.getCurrent().getNavigator().navigateTo("");
+			            UI.getCurrent()
+			            	.getNavigator()
+			            		.navigateTo(LoginView.NAME);
 		        	}
 		        	
 		            Notification.show("Action " + selectedItem.getText(),
@@ -149,12 +127,12 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		    };
 		    
     	// Get the user name from the session
-        String usernameStr = String.valueOf(getSession().getAttribute("username"));
+//        String usernameStr = String.valueOf(getSession().getAttribute("user"));
 		    
 		MenuBar userMenu = new MenuBar();
 		userMenu.addStyleName("user-menu");
 		
-		MenuItem user = userMenu.addItem(usernameStr, null);	// TODO - dynamic username here
+		MenuItem user = userMenu.addItem("Dwight Schrute", null);	// TODO - dynamic username here
 		user.addItem("Edit Profile", menuCommand);
 		user.addItem("Preferences", menuCommand);
 		user.addSeparator();
