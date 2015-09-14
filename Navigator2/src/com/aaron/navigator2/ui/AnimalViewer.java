@@ -1,4 +1,4 @@
-package com.aaron.navigator2.views;
+package com.aaron.navigator2.ui;
 
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;

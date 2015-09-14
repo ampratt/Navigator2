@@ -1,9 +1,10 @@
-package com.aaron.navigator2.views;
+package com.aaron.navigator2.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.aaron.navigator2.views.MainView;
 import com.vaadin.data.Item;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.shared.ui.label.ContentMode;

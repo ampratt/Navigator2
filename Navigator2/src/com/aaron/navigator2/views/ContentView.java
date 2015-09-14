@@ -1,6 +1,8 @@
 package com.aaron.navigator2.views;
 
 import com.aaron.navigator2.tabs.TabLayout;
+import com.aaron.navigator2.ui.AnimalViewer;
+import com.aaron.navigator2.ui.NewUseCaseInstanceWindow;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -106,47 +108,47 @@ public class ContentView extends VerticalLayout implements View {
 		return topBar;
 	}
 	
-	public Component buildContentLayout(){
-    	HorizontalLayout contentLayout = new HorizontalLayout();
-    	contentLayout.setWidth("100%");
-    	contentLayout.addStyleName("content");
-    	
-//        equalPanel.setWidth("100%");
-        equalPanel.addStyleName("equal-panel");
-        contentLayout.addComponent(equalPanel);
-//        contentLayout.setExpandRatio(equalPanel, 1);
-        
-        contentLayout.addComponent(buildTreeMenu2());
-//        contentLayout.addComponent(BuildTreeMenu());
-        
-        // Create a grid
-        Grid grid = new Grid();
-        // Define some columns
-        grid.addColumn("name", String.class);
-        grid.addColumn("born", Integer.class);
-        // Add some data rows
-        grid.addRow("Nicolaus Copernicus", 1543);
-        grid.addRow("Galileo Galilei", 1564);
-        grid.addRow("Johannes Kepler", 1571);
-
-//        contentLayout.addComponent(grid);
-        
-        grid.addSelectionListener(new SelectionListener() {
-            @Override
-            public void select(SelectionEvent event) {                   
-            	getUI()
-            		.getNavigator()
-            			.navigateTo(MainView.NAME + "/" + 
-        							event.getSelected().toString());
-            	
-				// update title
-            	setPageTitle(event.getSelected().toString());
-//            	title.setValue(event.getSelected().toString());
-            }
-        }); 
-
-        return contentLayout;
-    }
+//	public Component buildContentLayout(){
+//    	HorizontalLayout contentLayout = new HorizontalLayout();
+//    	contentLayout.setWidth("100%");
+//    	contentLayout.addStyleName("content");
+//    	
+////        equalPanel.setWidth("100%");
+//        equalPanel.addStyleName("equal-panel");
+//        contentLayout.addComponent(equalPanel);
+////        contentLayout.setExpandRatio(equalPanel, 1);
+//        
+//        contentLayout.addComponent(buildTreeMenu2());
+////        contentLayout.addComponent(BuildTreeMenu());
+//        
+//        // Create a grid
+//        Grid grid = new Grid();
+//        // Define some columns
+//        grid.addColumn("name", String.class);
+//        grid.addColumn("born", Integer.class);
+//        // Add some data rows
+//        grid.addRow("Nicolaus Copernicus", 1543);
+//        grid.addRow("Galileo Galilei", 1564);
+//        grid.addRow("Johannes Kepler", 1571);
+//
+////        contentLayout.addComponent(grid);
+//        
+//        grid.addSelectionListener(new SelectionListener() {
+//            @Override
+//            public void select(SelectionEvent event) {                   
+//            	getUI()
+//            		.getNavigator()
+//            			.navigateTo(MainView.NAME + "/" + 
+//        							event.getSelected().toString());
+//            	
+//				// update title
+//            	setPageTitle(event.getSelected().toString());
+////            	title.setValue(event.getSelected().toString());
+//            }
+//        }); 
+//
+//        return contentLayout;
+//    }
 	
 
 	
@@ -332,14 +334,16 @@ public class ContentView extends VerticalLayout implements View {
         if (event.getParameters() == null
             || event.getParameters().isEmpty()) {
         	setPageTitle("didn't get anything?");	//title.setValue
-            equalPanel.setContent(
-                new Label("Nothing to see here, " +
-                          "just pass along."));
+//            equalPanel.setContent(
+//                new Label("Nothing to see here, " +
+//                          "just pass along."));
             return;
         } else {
+        	Notification.show(event.getParameters(), Type.WARNING_MESSAGE);
+        	System.out.println(event.getParameters());
             setPageTitle(event.getParameters());	//title.setValue
-            equalPanel.setContent(new AnimalViewer(
-                event.getParameters()));
+//            equalPanel.setContent(new AnimalViewer(
+//                event.getParameters())); 
         }
     }
 	

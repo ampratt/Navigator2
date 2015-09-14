@@ -21,85 +21,33 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
-
+	
 /** A start view for navigating to the main view */
 public class LoginView extends VerticalLayout  implements View {
     private static final long serialVersionUID = -3398565663865641952L;
 
     public static final String NAME = "";
     
+    VerticalLayout layoutPanel;
+    TextField username;
+    PasswordField password;
+    Button loginButton;
+    
+	@Override
+    public void enter(ViewChangeEvent event) {
+        Notification.show("Welcome to the MBPeT design demo", 
+        			Notification.Type.TRAY_NOTIFICATION);
+    }
+	
     public LoginView() {
     	setSpacing(true);
     	setSizeFull();
     	this.addStyleName("login-background-grey");
-//    	addComponent(buildContent());
     	
-        Component loginForm = buildLoginForm();
-        addComponent(loginForm);
-        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
-
-        // welcome notification
-        Notification notification = new Notification(
-                "Welcome to Dashboard Demo");
-        notification
-                .setDescription("<span>This application is not real, it only demonstrates an application built with the <a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>");
-        notification.setHtmlContentAllowed(true);
-        notification.setStyleName("tray dark small closable login-help");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(20000);
-//        notification.show(Page.getCurrent());
-    }        
-    
-    private Component buildContent() {
-    	setSizeFull();
-
-        Component loginForm = buildLoginForm();
-        addComponent(loginForm);
-        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
-
-        Notification notification = new Notification(
-                "Welcome to the MBPeT Design Demo");
-        notification
-                .setDescription("<span>This application is not real, it only demonstrates an application built with the <a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>");
-        notification.setHtmlContentAllowed(true);
-        notification.setStyleName("tray dark small closable login-help");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(20000);
-        notification.show(Page.getCurrent());
-    	
-    	
-//        Button button = new Button("Login",
-//                new Button.ClickListener() {
-//            private static final long serialVersionUID = -1809072471885383781L;
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//            	UI.getCurrent()
-//        			.getNavigator()
-//            			.navigateTo(MainView.NAME);
-////                navigator.navigateTo(MainView.NAME);
-//            }
-//        });
-//        addComponent(button);
-////        setComponentAlignment(button, Alignment.MIDDLE_CENTER);
-//        
-//        
-//        Button registerButton = new Button("create user account",
-//                new Button.ClickListener() {
-//					@Override
-//					public void buttonClick(ClickEvent event) {
-//						// TODO Auto-generated method stub
-//						UI.getCurrent()
-//	        			.getNavigator()
-//	            			.navigateTo(RegistrationView.NAME);
-////						navigator.navigateTo(RegistrationView.NAME);
-//					}
-//				});
-//   		addComponent(registerButton);
-//        setComponentAlignment(registerButton, Alignment.MIDDLE_CENTER);
-		return null;
-	}
-    
-    private Component buildLoginForm() {
+//        Component loginForm = buildLoginForm();
+//        addComponent(loginForm);
+//        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
+        
         final VerticalLayout loginPanel = new VerticalLayout();
         loginPanel.setSizeUndefined();
         loginPanel.setSpacing(true);
@@ -108,11 +56,27 @@ public class LoginView extends VerticalLayout  implements View {
         loginPanel.addComponent(buildLabels());
         loginPanel.addComponent(buildFields());
         loginPanel.addComponent(buildRegistrationFields());
-//        loginPanel.addComponent(new CheckBox("Remember me", true));
-        return loginPanel;
-    }
-    
+        
+        addComponent(loginPanel);
+        setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        welcomeNotification();
 
+    }        
+    
+    
+//    private Component buildLoginForm() {
+//        final VerticalLayout loginPanel = new VerticalLayout();
+//        loginPanel.setSizeUndefined();
+//        loginPanel.setSpacing(true);
+//        loginPanel.addStyleName("login-panel");
+//
+//        loginPanel.addComponent(buildLabels());
+//        loginPanel.addComponent(buildFields());
+//        loginPanel.addComponent(buildRegistrationFields());
+////        loginPanel.addComponent(new CheckBox("Remember me", true));
+//        return loginPanel;
+//    }
+    
 
 	private Component buildLabels() {
         HorizontalLayout labels = new HorizontalLayout();	//CssLayout
@@ -142,23 +106,23 @@ public class LoginView extends VerticalLayout  implements View {
         fields.setSpacing(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        username = new TextField("Username");
         username.setIcon(FontAwesome.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final PasswordField password = new PasswordField("Password");
+        password = new PasswordField("Password");
         password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final Button signin = new Button("Sign In");
-        signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        signin.setClickShortcut(KeyCode.ENTER);
-        signin.focus();
+        loginButton = new Button("Sign In");
+        loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        loginButton.setClickShortcut(KeyCode.ENTER);
+        loginButton.focus();
 
-        fields.addComponents(username, password, signin);
-        fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
+        fields.addComponents(username, password, loginButton);
+        fields.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
 
-        signin.addClickListener(new ClickListener() {
+        loginButton.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
             	UI.getCurrent()
@@ -199,9 +163,19 @@ public class LoginView extends VerticalLayout  implements View {
     
     
 
-	@Override
-    public void enter(ViewChangeEvent event) {
-        Notification.show("Welcome to the MBPeT design demo", 
-        			Notification.Type.TRAY_NOTIFICATION);
-    }
+
+	
+	private void welcomeNotification() {
+        // welcome notification
+        Notification notification = new Notification(
+                "Welcome to Dashboard Demo");
+        notification
+                .setDescription("<span>This application is not real, it only demonstrates an application built with the <a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>");
+        notification.setHtmlContentAllowed(true);
+        notification.setStyleName("tray dark small closable login-help");
+        notification.setPosition(Position.BOTTOM_CENTER);
+        notification.setDelayMsec(20000);
+//        notification.show(Page.getCurrent());
+		
+	}
 }

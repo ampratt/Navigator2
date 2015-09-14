@@ -24,7 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 public class Navigator2UI extends UI {
 	private static final long serialVersionUID = -4150121950677547344L;
 	
-	Navigator  navigator;
+//	Navigator  navigator;
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = Navigator2UI.class)
@@ -46,12 +46,12 @@ public class Navigator2UI extends UI {
         getPage().setTitle("Navigation2 Example");
         
         // Create a navigator to control the views
-        navigator = new Navigator(this, this);
+        new Navigator(this, this);	//navigator = 
         
         // Create and register the views
-        navigator.addView("", new LoginView());	//navigator
-        navigator.addView(RegistrationView.NAME, new RegistrationView(navigator));
-        navigator.addView(MainView.NAME, new MainView());	//navigator
+        getNavigator().addView("", new LoginView());	//navigator
+        getNavigator().addView(RegistrationView.NAME, new RegistrationView());
+        getNavigator().addView(MainView.NAME, new MainView());	//navigator
     }
 	
     private void releaseResources() {

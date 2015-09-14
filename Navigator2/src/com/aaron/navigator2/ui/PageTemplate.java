@@ -1,4 +1,4 @@
-package com.aaron.navigator2.views;
+package com.aaron.navigator2.ui;
 
 import com.aaron.navigator2.tabs.TabLayout;
 import com.vaadin.navigator.View;

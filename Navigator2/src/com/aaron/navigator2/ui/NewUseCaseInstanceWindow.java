@@ -1,9 +1,10 @@
-package com.aaron.navigator2.views;
+package com.aaron.navigator2.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.aaron.navigator2.views.MainView;
 import com.vaadin.data.Item;
 import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;

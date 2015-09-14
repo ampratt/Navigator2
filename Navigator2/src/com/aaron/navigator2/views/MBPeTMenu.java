@@ -1,5 +1,8 @@
 package com.aaron.navigator2.views;
 
+import com.aaron.navigator2.ui.ConfirmDeleteMenuItemWindow;
+import com.aaron.navigator2.ui.CreateTestCaseWindow;
+import com.aaron.navigator2.ui.NewUseCaseInstanceWindow;
 import com.aaron.navigator2.utils.ExampleUtil;
 import com.vaadin.event.Action;
 import com.vaadin.data.Item;
@@ -80,30 +83,6 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
 
-//        menuButtons.addComponent(new Button("Pig",
-//        		new ButtonListener("pig")));
-//        menuButtons.addComponent(new Button("Cat",
-//        		new ButtonListener("cat")));
-//        menuButtons.addComponent(new Button("Dog",      
-//        		new ButtonListener("dog")));
-//        menuButtons.addComponent(new Button("Reindeer",
-//        		new ButtonListener("reindeer")));
-//        menuButtons.addComponent(new Button("Penguin",
-//        		new ButtonListener("penguin")));
-//        menuButtons.addComponent(new Button("Sheep",
-//        		new ButtonListener("sheep")));
-        
-        
-//        menuAndContentLayout.setSpacing(true);
-//        menuAndContentLayout.setSizeFull();
-//        addComponent(menuLayout);		//menuAndContentLayout
-////        menuAndContentLayout.addComponent(equalPanel);
-//        setExpandRatio(menuLayout, 2);	//menuAndContentLayout
-//        menuAndContentLayout.setExpandRatio(equalPanel, 3);
-//        addComponent(equalPanel);
-//        addComponent(logout);
-//        addComponent(menuAndContentLayout);
-//        addComponent(menuContent);
         return menuLayout;
                
     }
@@ -146,32 +125,45 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		MenuBar userMenu = new MenuBar();
 		userMenu.addStyleName("user-menu");
 		
-		MenuItem user = userMenu.addItem("John Doe", null);	// TODO - dynamic username here
+		MenuItem user = userMenu.addItem("Dwight Schrute", null);	// TODO - dynamic username here
 		user.addItem("Edit Profile", menuCommand);
 		user.addItem("Preferences", menuCommand);
 		user.addSeparator();
 		user.addItem("Sign Out", menuCommand);
 		
-
-
-		
-		// Allow going back to the start
-	    Button logout = new Button("logout");
-	    logout.addClickListener(new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				UI.getCurrent()
-	                .getNavigator()
-	                	.navigateTo(
-	                			LoginView.NAME);	//DashboardViewType.REPORTS.getViewName());
-			}
-		});
 		return userMenu;
 	}
 	
 	
 	private VerticalLayout menuButtons() {
-		VerticalLayout buttons = new VerticalLayout();
+		final VerticalLayout buttons = new VerticalLayout();
+		
+		// TESTING
+        final Label testlabel = new Label("i added this");
+        Button add = new Button("add", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				buttons.addComponent(testlabel);
+			}
+		});
+        
+        Button remove = new Button("remove", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				int labelindex = buttons.getComponentIndex(testlabel);
+				Notification.show("layout count" + buttons.getComponent(getComponentCount()).toString() + 
+									"index of testlabel" + buttons.getComponentIndex(testlabel));
+				
+			}
+		});
+        buttons.addComponent(add);
+        buttons.addComponent(remove);
+        add.addStyleName("menu-button-left-align");
+        remove.addStyleName("menu-button-left-align");
+		buttons.setComponentAlignment(add, Alignment.MIDDLE_LEFT);
+		buttons.setComponentAlignment(remove, Alignment.MIDDLE_LEFT);
+
+		
 		
 		// landing page button
 		@SuppressWarnings("serial")
@@ -204,10 +196,8 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 			@Override
 			public void buttonClick(ClickEvent event) {
 		        // open window to create item
-				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
-		        
 		        // Add it to the root component
-		        UI.getCurrent().addWindow(sub);
+		        UI.getCurrent().addWindow(new CreateTestCaseWindow(tree));
 		        
 		        
 //	            // Create new item, set as parent, allow children (= leaf node)
