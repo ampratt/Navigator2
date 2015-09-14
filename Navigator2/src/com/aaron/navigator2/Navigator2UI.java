@@ -101,13 +101,13 @@ public class Navigator2UI extends UI {
         getSession().close();
         
         // Close the session
-        UI.getCurrent().getSession().close();
-        UI.getCurrent().getSession().getService().closeSession(VaadinSession.getCurrent());
-        UI.getCurrent().close();
-        
-        // Redirect this page immediately
-        UI.getCurrent().getPage().setLocation(
-        			VaadinServlet.getCurrent().getServletContext().getContextPath());	//"/"
+//        UI.getCurrent().getSession().close();
+//        UI.getCurrent().getSession().getService().closeSession(VaadinSession.getCurrent());
+//        UI.getCurrent().close();
+//        
+//        // Redirect this page immediately
+//        UI.getCurrent().getPage().setLocation(
+//        			VaadinServlet.getCurrent().getServletContext().getContextPath());	//"/"
     }
 	
 	  private ConnectorTracker tracker;

@@ -29,9 +29,8 @@ public class ContentView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -5878465079008311569L;
 	
 	Panel equalPanel = new Panel("equal panel"); 
-	public Label title = new Label("");
+	public static Label title = new Label("");
 	Tree tree;
-//	String pageTitle = null;
     
 	public ContentView(Tree tree) {
 		setSizeFull();
@@ -321,7 +320,7 @@ public class ContentView extends VerticalLayout implements View {
 //	}
 
 	
-	public void setPageTitle(String t){
+	public static void setPageTitle(String t){
 		title.setValue(t);
 
 	}
