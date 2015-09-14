@@ -11,6 +11,9 @@ import com.vaadin.event.Action.Handler;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -32,10 +35,6 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class MBPeTMenu extends CustomComponent implements Action.Handler{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8976097773826956282L;
 	
 //    public static final String NAME = "MBPeT";
 	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
@@ -79,7 +78,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 //    	menuLayout.setHeight("100%");
     	
     	menuLayout.addComponent(buildTitle());
-        menuLayout.addComponent(buildUserMenu());
+        menuLayout.addComponent(buildUserMenu());       
         menuLayout.addComponent(menuButtons());
         menuLayout.addComponent(buildTreeMenu());
 //        menuLayout.addComponent(buildMenuItems());
@@ -116,9 +115,18 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 //			            getSession().setAttribute("user", null);
 
 			            // Refresh this view, should redirect to login view
-			            UI.getCurrent()
-			            	.getNavigator()
-			            		.navigateTo(LoginView.NAME);
+//			            UI.getCurrent()
+//			            	.getNavigator()
+//			            		.navigateTo(LoginView.NAME);
+			            
+			            //close the session
+			            UI.getCurrent().getSession().close();
+			            UI.getCurrent().getSession().getService().closeSession(VaadinSession.getCurrent());
+			            UI.getCurrent().close();
+			            
+			            
+			            UI.getCurrent().getPage().setLocation(
+			        			VaadinServlet.getCurrent().getServletContext().getContextPath());	//"/"
 		        	}
 		        	
 		            Notification.show("Action " + selectedItem.getText(),
@@ -160,10 +168,37 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 	
 	
 	private VerticalLayout menuButtons() {
-		VerticalLayout buttons = new VerticalLayout();
+		final VerticalLayout buttons = new VerticalLayout();
+		
+        // TESTING
+        final Label testlabel = new Label("i added this");
+        Button add = new Button("add", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				buttons.addComponent(testlabel);
+			}
+		});
+        
+        Button remove = new Button("remove", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				int labelindex = buttons.getComponentIndex(testlabel);
+				Notification.show("layout count" + buttons.getComponent(getComponentCount()).toString() + 
+									"index of testlabel" + buttons.getComponentIndex(testlabel));
+				
+			}
+		});
+        buttons.addComponent(add);
+        buttons.addComponent(remove);
+        add.addStyleName("menu-button-left-align");
+        remove.addStyleName("menu-button-left-align");
+		buttons.setComponentAlignment(add, Alignment.MIDDLE_LEFT);
+		buttons.setComponentAlignment(remove, Alignment.MIDDLE_LEFT);
+
+        
+        
 		
 		// landing page button
-		@SuppressWarnings("serial")
 		Button landingButton = new Button("Start page", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {

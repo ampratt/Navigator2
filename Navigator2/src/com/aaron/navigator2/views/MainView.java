@@ -27,21 +27,15 @@ import com.vaadin.ui.Button.ClickEvent;
 /** Main view with a menu (with declarative layout design) */
 //@DesignRoot
 public class MainView extends HorizontalLayout  implements View {
-    private static final long serialVersionUID = -3398565663865641952L;
 
     public static final String NAME = "MBPeT";
     
     MBPeTMenu menu;
-//    private HorizontalLayout rootLayout;
-	final static Tree tree = new Tree("Test Cases:");
-    VerticalLayout menuLayout = new VerticalLayout();
-	ContentView contentView = new ContentView(tree);
-	LandingPageView lanndingPage = new LandingPageView(tree);	//PageTemplate();
+	final Tree tree;
+	final LandingPageView lanndingPage;
+//	ContentView contentView = new ContentView(tree);
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
-//    Navigator navigator;
-//    HorizontalLayout menuAndContentLayout = new HorizontalLayout();
 //    Panel equalPanel = new Panel("equal panel");
-//	VerticalLayout contentLayout = new VerticalLayout();
 
     // Menu navigation button listener
     class ButtonListener implements Button.ClickListener {
@@ -63,9 +57,11 @@ public class MainView extends HorizontalLayout  implements View {
     }
     
     
-	public MainView() {		//final Navigator navigator
-//    	this.navigator = navigator;
+	public MainView() {
 
+		tree = new Tree("Test Cases:");
+		lanndingPage = new LandingPageView(tree);
+		
 //    	setSpacing(true);
 		setSizeFull();
 		addStyleName("mainview");
@@ -105,30 +101,37 @@ public class MainView extends HorizontalLayout  implements View {
 //        // And pass it to the menu to disaply it
 //        Notification.show("welcome: " + username);
         
-        if (event.getParameters() == null
-            || event.getParameters().isEmpty()) {
-          contentView.equalPanel.setContent(
-        		  new Label("Nothing to see here, " +
-        				  "just pass along."));
-            return;
-        } else if (event.getParameters().equals("landingPage")) {
+//        if (event.getParameters() == null
+//            || event.getParameters().isEmpty()) {
+//          contentView.equalPanel.setContent(
+//        		  new Label("Nothing to see here, " +
+//        				  "just pass along."));
+//            return;
+//        } 
+    	if (event.getParameters().equals("landingPage")
+    			|| event.getParameters() == null || event.getParameters().isEmpty()) {
 //            removeComponent(contentView);
         	removeComponent(getComponent(1));	//pageTemplate
             addComponent(lanndingPage);
             setExpandRatio(lanndingPage, 8.3f);
-
+            
+            markAsDirty();
+            
               return;
         } else {
         	removeComponent(getComponent(1));	//contentView
         	try {
+        		ContentView contentView = new ContentView(tree);
         		addComponent(contentView);        		
         		setExpandRatio(contentView, 8.3f);
-        		
+
+                markAsDirty();
+
         		// update page title
-        		ContentView.setPageTitle(event.getParameters());
+//        		ContentView.setPageTitle(event.getParameters());
         		
-        		contentView.equalPanel.setContent(new AnimalViewer(
-        				event.getParameters()));
+//        		contentView.equalPanel.setContent(new AnimalViewer(
+//        				event.getParameters()));
         	} catch (RuntimeException e) {
         		getUI().getConnectorTracker().markAllConnectorsDirty(); 
         		getUI().getConnectorTracker().markAllClientSidesUninitialized(); 
