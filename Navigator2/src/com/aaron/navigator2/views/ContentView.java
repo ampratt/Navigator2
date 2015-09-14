@@ -26,6 +26,7 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
 public class ContentView extends VerticalLayout implements View {
+	private static final long serialVersionUID = -5878465079008311569L;
 	
 	Panel equalPanel = new Panel("equal panel"); 
 	public Label title = new Label("");
@@ -342,11 +343,7 @@ public class ContentView extends VerticalLayout implements View {
         	System.out.println(event.getParameters());
             setPageTitle(event.getParameters());	//title.setValue
 //            equalPanel.setContent(new AnimalViewer(
-<<<<<<< HEAD
 //                event.getParameters()));
-=======
-//                event.getParameters())); 
->>>>>>> refs/heads/beforeDomainUpdate
         }
     }
 	
