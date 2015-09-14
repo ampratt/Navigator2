@@ -19,9 +19,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
-
+	
 /** A start view for navigating to the main view */
 public class LoginView extends VerticalLayout  implements View, Button.ClickListener {
     private static final long serialVersionUID = -3398565663865641952L;
@@ -29,34 +28,39 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
     public static final String NAME = "";
     
     VerticalLayout layoutPanel;
-    private TextField username;
-    private PasswordField password;
-    private Button loginButton;
+    TextField username;
+    PasswordField password;
+    Button loginButton;
     
+	@Override
+    public void enter(ViewChangeEvent event) {
+        Notification.show("Welcome to the MBPeT design demo", 
+        			Notification.Type.TRAY_NOTIFICATION);
+    }
+	
     public LoginView() {
     	setSpacing(true);
     	setSizeFull();
     	this.addStyleName("login-background-grey");
 
-        // The view root layout
-    	layoutPanel = new VerticalLayout();
-        layoutPanel.setSizeFull();
-        layoutPanel.setSpacing(true);
-        layoutPanel.addStyleName("login-panel");
-        addComponent(layoutPanel);
-        setComponentAlignment(layoutPanel, Alignment.MIDDLE_CENTER);	//loginForm
-
-
-        layoutPanel.addComponent(buildLabels());
-        layoutPanel.addComponent(buildFields());
-        layoutPanel.addComponent(buildRegistrationFields());
-        welcomeNotification();
 //        Component loginForm = buildLoginForm();
 //        addComponent(loginForm);
-//        setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);	//loginForm
+//        setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
+        
+final VerticalLayout loginPanel = new VerticalLayout();
+        loginPanel.setSizeUndefined();
+        loginPanel.setSpacing(true);
+        loginPanel.addStyleName("login-panel");
+
+        loginPanel.addComponent(buildLabels());
+        loginPanel.addComponent(buildFields());
+        loginPanel.addComponent(buildRegistrationFields());
+        
+        addComponent(loginPanel);
+        setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        welcomeNotification();
 
     }        
-
 
 	private Component buildLabels() {
         HorizontalLayout labels = new HorizontalLayout();	//CssLayout
@@ -151,74 +155,6 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
 	}
     
     
-
-	@Override
-    public void enter(ViewChangeEvent event) {
-		loginButton.focus();
-//        Notification.show("Welcome to the MBPeT design demo", 
-//        			Notification.Type.TRAY_NOTIFICATION);
-    }
-	
-    // Validator for validating the passwords
-    private static final class PasswordValidator extends
-            AbstractValidator<String> {
-
-        public PasswordValidator() {
-            super("The password provided is not valid");
-        }
-
-        @Override
-        protected boolean isValidValue(String value) {
-            // Password must be at least 8 characters long and contain at least one number
-            if (value != null
-                    && (value.length() < 8 || !value.matches(".*\\d.*"))) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public Class<String> getType() {
-            return String.class;
-        }
-    }
-
-    @Override
-    public void buttonClick(ClickEvent event) {
-        // Validate the fields using the navigator. By using validators for the
-        // fields we reduce the amount of queries we have to use to the database
-        // for wrongly entered passwords
-        if (!username.isValid() || !password.isValid()) {
-            return;
-        }
-
-        String usernameStr = username.getValue();
-        String password = this.password.getValue();
-
-        // Credentials were valid.
-        // proceed to: Validate username and password with database here. For examples sake
-        // I use a dummy username and password.
-        boolean isValid = usernameStr.equals("")
-                && password.equals("");	//passw0rd
-
-        if (isValid) {
-
-            // Store the current user in the service session
-            getSession().setAttribute("user", usernameStr);
-
-            // Navigate to main view
-            UI.getCurrent().getNavigator().navigateTo(MainView.NAME + "/" + "landingPage");	//SimpleLoginMainView.NAME
-
-        } else {
-
-            // Wrong password clear the password field and refocuses it
-            this.password.setValue(null);
-            this.password.focus();
-
-        }
-    }
-    
-    
 	private void welcomeNotification() {
         // welcome notification
         Notification notification = new Notification(
@@ -230,20 +166,6 @@ public class LoginView extends VerticalLayout  implements View, Button.ClickList
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(20000);
 //        notification.show(Page.getCurrent());
-		
 	}
-    
-//    private Component buildLoginForm() {
-//        final VerticalLayout loginPanel = new VerticalLayout();
-//        loginPanel.setSizeUndefined();
-//        loginPanel.setSpacing(true);
-//        loginPanel.addStyleName("login-panel");
-//
-//        loginPanel.addComponent(buildLabels());
-//        loginPanel.addComponent(buildFields());
-//        loginPanel.addComponent(buildRegistrationFields());
-////        loginPanel.addComponent(new CheckBox("Remember me", true));
-//        return loginPanel;
-//    }
     
 }

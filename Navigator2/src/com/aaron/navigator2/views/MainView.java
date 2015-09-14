@@ -26,13 +26,14 @@ import com.vaadin.ui.Button.ClickEvent;
 
 /** Main view with a menu (with declarative layout design) */
 //@DesignRoot
-public class MainView extends HorizontalLayout  implements View {
+public class MainView extends HorizontalLayout implements View {
+    private static final long serialVersionUID = -3398565663865641952L;
 
     public static final String NAME = "MBPeT";
-    
+//    VerticalLayout menuLayout = new VerticalLayout();
     MBPeTMenu menu;
 	final Tree tree;
-	final LandingPageView lanndingPage;
+	final LandingPageView landingPage;
 //	ContentView contentView = new ContentView(tree);
 	String[] animals = new String[] {"possum", "donkey", "pig", "duck", "dog", "cow", "horse", "cat", "reindeer", "penguin", "sheep", "goat", "tractor cow", "chicken", "bacon", "cheddar"};
 //    Panel equalPanel = new Panel("equal panel");
@@ -58,38 +59,24 @@ public class MainView extends HorizontalLayout  implements View {
     
     
 	public MainView() {
-
+		
 		tree = new Tree("Test Cases:");
-		lanndingPage = new LandingPageView(tree);
+		landingPage = new LandingPageView(tree);
 		
 //    	setSpacing(true);
 		setSizeFull();
 		addStyleName("mainview");
     	
     	// add menu to main view
-    	// menu CREATED in enter()
     	menu = new MBPeTMenu(tree);	//navigator
     	addComponent(menu);
     	setExpandRatio(menu, 1.7f);
     	
     	
     	//Landing Page
-    	addComponent(lanndingPage);	
-    	setExpandRatio(lanndingPage, 8.3f);    	
+    	addComponent(landingPage);	
+    	setExpandRatio(landingPage, 8.3f);    	
     	
-    	// Content View
-//        addComponent(contentView);	
-//        setExpandRatio(contentView, 8.3f);
-    	
-    	// add content area to main view
-//	    	ComponentContainer content = new CssLayout();
-//	    	content.addStyleName("view-content");
-//	    	content.setSizeFull();
-//    	addComponent(content);
-//    	setExpandRatio(content, 1.0f);
-//    	new MBPeTNavigator(content);
-    	
-//    	setCompositionRoot(rootLayout);
     }        
     
     
@@ -112,8 +99,8 @@ public class MainView extends HorizontalLayout  implements View {
     			|| event.getParameters() == null || event.getParameters().isEmpty()) {
 //            removeComponent(contentView);
         	removeComponent(getComponent(1));	//pageTemplate
-            addComponent(lanndingPage);
-            setExpandRatio(lanndingPage, 8.3f);
+            addComponent(landingPage);
+            setExpandRatio(landingPage, 8.3f);
             
             markAsDirty();
             
@@ -128,7 +115,7 @@ public class MainView extends HorizontalLayout  implements View {
                 markAsDirty();
 
         		// update page title
-//        		ContentView.setPageTitle(event.getParameters());
+        		ContentView.setPageTitle(event.getParameters());
         		
 //        		contentView.equalPanel.setContent(new AnimalViewer(
 //        				event.getParameters()));
@@ -139,61 +126,6 @@ public class MainView extends HorizontalLayout  implements View {
         	}
         }
     }
-
-    
-//    public void MenuLayout() {
-//    	menuLayout.addStyleName("menu");
-//    	
-//		Label title = new Label("Layout Demo");
-//		title.addStyleName("h1");
-//		menuLayout.addComponent(title);
-//        
-//        // Allow going back to the start
-//        logout.addClickListener(new Button.ClickListener() {
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				// TODO Auto-generated method stub
-//				navigator.navigateTo(LoginView.NAME);					
-//			}
-//		});
-//        menuLayout.addComponent(logout);
-//
-//        Panel menuPanel = new Panel();
-//        VerticalLayout menuButtons = new VerticalLayout();	
-//        
-//        for (String s : animals) {
-//        	String animal = s.substring(0, 1).toUpperCase() + s.substring(1);
-//        	menuButtons.addComponent(new Button(animal,
-//        			new ButtonListener(s)));
-//        }
-////        menuButtons.addComponent(new Button("Pig",
-////        		new ButtonListener("pig")));
-////        menuButtons.addComponent(new Button("Cat",
-////        		new ButtonListener("cat")));
-////        menuButtons.addComponent(new Button("Dog",      
-////        		new ButtonListener("dog")));
-////        menuButtons.addComponent(new Button("Reindeer",
-////        		new ButtonListener("reindeer")));
-////        menuButtons.addComponent(new Button("Penguin",
-////        		new ButtonListener("penguin")));
-////        menuButtons.addComponent(new Button("Sheep",
-////        		new ButtonListener("sheep")));
-//        
-//        menuPanel.setContent(menuButtons);
-//        menuLayout.addComponent(menuPanel);
-//        
-////        menuAndContentLayout.setSpacing(true);
-////        menuAndContentLayout.setSizeFull();
-////        addComponent(menuLayout);		//menuAndContentLayout
-//////        menuAndContentLayout.addComponent(equalPanel);
-////        setExpandRatio(menuLayout, 2);	//menuAndContentLayout
-////        menuAndContentLayout.setExpandRatio(equalPanel, 3);
-////        addComponent(equalPanel);
-////        addComponent(logout);
-////        addComponent(menuAndContentLayout);
-////        addComponent(menuContent);
-//               
-//    }
   
 
 }

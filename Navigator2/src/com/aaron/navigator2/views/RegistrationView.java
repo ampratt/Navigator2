@@ -16,7 +16,11 @@ public class RegistrationView extends VerticalLayout implements View {
 
     public static final String NAME = "registration";
 
+<<<<<<< HEAD
     public RegistrationView() {		//final Navigator navigator
+=======
+    public RegistrationView() {
+>>>>>>> refs/heads/beforeDomainUpdate
         setSizeFull();
         
 //        LoginForm login = new LoginForm();
@@ -28,8 +32,12 @@ public class RegistrationView extends VerticalLayout implements View {
             private static final long serialVersionUID = -1809072471885383781L;
             @Override
             public void buttonClick(ClickEvent event) {
+<<<<<<< HEAD
                 UI.getCurrent().getNavigator()
                 	.navigateTo(LoginView.NAME);
+=======
+                UI.getCurrent().getNavigator().navigateTo(LoginView.NAME);
+>>>>>>> refs/heads/beforeDomainUpdate
             }
         });
         addComponent(button);

@@ -338,9 +338,15 @@ public class ContentView extends VerticalLayout implements View {
 //                          "just pass along."));
             return;
         } else {
+        	Notification.show(event.getParameters(), Type.WARNING_MESSAGE);
+        	System.out.println(event.getParameters());
             setPageTitle(event.getParameters());	//title.setValue
 //            equalPanel.setContent(new AnimalViewer(
+<<<<<<< HEAD
 //                event.getParameters()));
+=======
+//                event.getParameters())); 
+>>>>>>> refs/heads/beforeDomainUpdate
         }
     }
 	

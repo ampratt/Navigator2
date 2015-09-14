@@ -49,12 +49,12 @@ public class Navigator2UI extends UI {
         // Create a new instance of the navigator. The navigator will attach
         // itself automatically to this view.
         //
-        Navigator navigator = new Navigator(this, this);
+        new Navigator(this, this);	//navigator = 
         
         // Create and register the views
-        navigator.addView("", new LoginView());	//navigator
-        navigator.addView(MainView.NAME, new MainView());	//navigator
-        navigator.addView(RegistrationView.NAME, new RegistrationView());
+        getNavigator().addView("", new LoginView());	//navigator
+        getNavigator().addView(RegistrationView.NAME, new RegistrationView());
+        getNavigator().addView(MainView.NAME, new MainView());	//navigator
 //        navigator.navigateTo("");
         
         //
@@ -94,6 +94,12 @@ public class Navigator2UI extends UI {
     }
 	
     private void releaseResources() {
+        // Redirect this page immediately
+        getPage().setLocation("/MBPeT");
+        
+        // Close the session
+        getSession().close();
+        
         // Close the session
         UI.getCurrent().getSession().close();
         UI.getCurrent().getSession().getService().closeSession(VaadinSession.getCurrent());

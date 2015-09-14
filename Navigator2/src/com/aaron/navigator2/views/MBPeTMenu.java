@@ -35,6 +35,10 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class MBPeTMenu extends CustomComponent implements Action.Handler{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8976097773826956282L;
 	
 //    public static final String NAME = "MBPeT";
 	VerticalLayout menuLayout = new VerticalLayout(); //VerticalLayout
@@ -111,31 +115,16 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		        	} else if (selectedItem.getText().equals("Preferences")){
 		        		
 		        	} else if (selectedItem.getText().equals("Sign Out")){
-			            // "Logout" the user
-//			            getSession().setAttribute("user", null);
-
-			            // Refresh this view, should redirect to login view
-//			            UI.getCurrent()
-//			            	.getNavigator()
-//			            		.navigateTo(LoginView.NAME);
-			            
-			            //close the session
-			            UI.getCurrent().getSession().close();
-			            UI.getCurrent().getSession().getService().closeSession(VaadinSession.getCurrent());
-			            UI.getCurrent().close();
-			            
-			            
-			            UI.getCurrent().getPage().setLocation(
-			        			VaadinServlet.getCurrent().getServletContext().getContextPath());	//"/"
+						UI.getCurrent()
+		                	.getNavigator()
+		                		.navigateTo(
+		                				LoginView.NAME);
 		        	}
 		        	
 		            Notification.show("Action " + selectedItem.getText(),
 		                    Type.TRAY_NOTIFICATION);
 		        }
 		    };
-		    
-    	// Get the user name from the session
-//        String usernameStr = String.valueOf(getSession().getAttribute("user"));
 		    
 		MenuBar userMenu = new MenuBar();
 		userMenu.addStyleName("user-menu");
@@ -146,23 +135,6 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		user.addSeparator();
 		user.addItem("Sign Out", menuCommand);
 	
-		// Allow going back to the start
-//	    Button logout = new Button("logout");
-//	    logout.addClickListener(new Button.ClickListener() {
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//	            // "Logout" the user
-//	            getSession().setAttribute("user", null);
-//
-//	            // Refresh this view, should redirect to login view
-//	            UI.getCurrent().getNavigator().navigateTo(NAME);
-//	            
-////				UI.getCurrent()
-////	                .getNavigator()
-////	                	.navigateTo(
-////	                			LoginView.NAME);	//DashboardViewType.REPORTS.getViewName());
-//			}
-//		});
 		return userMenu;
 	}
 	
@@ -199,6 +171,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
         
 		
 		// landing page button
+		@SuppressWarnings("serial")
 		Button landingButton = new Button("Start page", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -227,9 +200,7 @@ public class MBPeTMenu extends CustomComponent implements Action.Handler{
 		createTestCase.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-		        // open window to create item
-//				CreateTestCaseWindow sub = new CreateTestCaseWindow(tree);
-		        
+		        // open window to create item		        
 		        // Add it to the root component
 		        UI.getCurrent().addWindow(new CreateTestCaseWindow(tree));
 		        
